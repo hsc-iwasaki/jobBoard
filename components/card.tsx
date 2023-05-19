@@ -38,7 +38,7 @@ const CardCompornent = <
         <ButtonGroup spacing="2">
           <NextLink
             className="bg-blue-600 hover:bg-blue-500 text-white rounded px-4 py-2"
-            href={`/jobs/${passId}`}
+            href={{ pathname: `/company/${passId}` }}
             passHref
           >
             求人詳細

@@ -1,7 +1,7 @@
 "use client";
 import { SimpleGrid } from "@chakra-ui/react";
-import CardCompornent from "./card";
-import data from "../../../dummy.json";
+import CardCompornent from "../../components/card";
+import data from "../../dummy.json";
 const List = () => {
   return (
     <main>
