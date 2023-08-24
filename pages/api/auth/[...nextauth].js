@@ -30,13 +30,13 @@ export const authOptions = {
       async session(session, user) {
         session.user.id = user.sub;
         session.user.name = user.sub;
+        session.user.email = user.sub;
         return Promise.resolve(session);
       },
       async authorize(credentials) {
         const user = await prisma.user.findUnique({
           where: { email: credentials.email },
         });
-
         if (
           user &&
           (await bcrypt.compare(credentials.password, user.password))
@@ -78,8 +78,6 @@ export const authOptions = {
   },
   pages: {
     newUser: "/auth/new-user", // New users will be directed here on first sign in (leave the property out if not of interest)
-    signIn: "/login",
-    signUp: "/register",
   },
   secret: SECRET,
 };

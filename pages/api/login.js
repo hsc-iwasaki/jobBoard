@@ -1,7 +1,6 @@
 import { prisma } from "../lib/prisma";
 import bcrypt from "bcrypt";
-import db from "../lib/db";
-import { signIn } from "next-auth/react";
+
 export default async function handler(req, res) {
   if (req.method === "POST") {
     try {
@@ -12,14 +11,14 @@ export default async function handler(req, res) {
         },
       });
       if (!user) {
-        throw new Error("User not found");
+        throw new Error("このメールアドレスではログインできません");
       }
       // ハッシュ化されたパスワードと入力されたパスワードを比較
       const isPasswordValid = await bcrypt.compare(password, user.password);
       if (!isPasswordValid) {
-        throw new Error("Invalid password");
+        throw new Error("パスワードが間違っています");
       }
-      return res.status(200).json({ message: "Logged in successfully." });
+      return res.status(200).json({ message: "ログインに成功しました" });
     } catch (error) {
       res.status(400).json({ error: error.message });
     }

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { signIn } from "next-auth/react";
+import NextLink from "next/link";
 export default function Login() {
   const [formData, setFormData] = useState({
     email: "",
@@ -31,68 +32,78 @@ export default function Login() {
 
   return (
     <>
-      {errorMessage && <div className="error">{errorMessage}</div>}
-      <div className="container">
-        <h2>Login</h2>
-        <form onSubmit={handleSubmit}>
-          <div className="form-group">
-            <label htmlFor="email">Email:</label>
-            <input
-              type="email"
-              id="email"
-              value={formData.email}
-              onChange={(e) =>
-                setFormData({ ...formData, email: e.target.value })
-              }
-              required
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="password">Password:</label>
-            <input
-              type="password"
-              id="password"
-              value={formData.password}
-              onChange={(e) =>
-                setFormData({ ...formData, password: e.target.value })
-              }
-              required
-            />
-          </div>
-          <button type="submit">Login</button>
-        </form>
-        <style jsx>{`
-          .container {
-            max-width: 400px;
-            margin: 0 auto;
-            padding: 20px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-          }
-          .form-group {
-            margin-bottom: 15px;
-          }
-          label {
-            display: block;
-            margin-bottom: 5px;
-          }
-          input {
-            width: 100%;
-            padding: 10px;
-            box-sizing: border-box;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-          }
-          button {
-            padding: 10px 15px;
-            background-color: #0070f3;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-          }
-        `}</style>
+      <div className="mx-auto max-w-screen-xl px-4 py-16 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-lg">
+          <h1 className="text-center text-2xl font-bold  sm:text-3xl">
+            ログイン
+          </h1>
+          <form
+            onSubmit={handleSubmit}
+            className="mb-0 mt-6 space-y-4 rounded-lg p-4 shadow-lg sm:p-6 lg:p-8"
+          >
+            <div className="text-center text-lg font-medium">
+              {errorMessage && <p className="text-red-600">{errorMessage}</p>}
+            </div>
+
+            <div>
+              <label htmlFor="email" className="sr-only">
+                Email
+              </label>
+
+              <div className="relative">
+                <input
+                  className="w-full rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm"
+                  placeholder="メールアドレス"
+                  type="email"
+                  id="email"
+                  value={formData.email}
+                  onChange={(e) =>
+                    setFormData({ ...formData, email: e.target.value })
+                  }
+                  required
+                />
+              </div>
+            </div>
+
+            <div>
+              <label htmlFor="password" className="sr-only">
+                Password
+              </label>
+
+              <div className="relative">
+                <input
+                  type="password"
+                  className="w-full rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm"
+                  placeholder="パスワード"
+                  id="password"
+                  value={formData.password}
+                  onChange={(e) =>
+                    setFormData({ ...formData, password: e.target.value })
+                  }
+                  required
+                />
+              </div>
+            </div>
+
+            <button
+              type="submit"
+              className="block w-full rounded-lg bg-indigo-600 px-5 py-3 text-sm font-medium text-white"
+            >
+              ログイン
+            </button>
+
+            <p className="text-center text-sm text-gray-500">
+              アカウント
+              <NextLink
+                href="/register"
+                className="underline"
+                aria-current="page"
+              >
+                登録はこちら
+              </NextLink>
+            </p>
+          </form>
+        </div>
       </div>
     </>
   );
