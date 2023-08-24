@@ -12,14 +12,11 @@ import {
 } from "@chakra-ui/react";
 import NextLink from "next/link";
 
-const CardCompornent = <
-  T extends { name: string; subtitle: string; pass: string }
->(
+const CardCompornent = <T extends { name: string; subtitle: string }>(
   props: T
 ) => {
   const companyName = props.name;
   const subTitle = props.subtitle;
-  const passId = props.pass;
 
   return (
     <Card maxW="sm">
@@ -38,7 +35,7 @@ const CardCompornent = <
         <ButtonGroup spacing="2">
           <NextLink
             className="bg-blue-600 hover:bg-blue-500 text-white rounded px-4 py-2"
-            href={{ pathname: `/company/${passId}` }}
+            href="#"
             passHref
           >
             求人詳細
