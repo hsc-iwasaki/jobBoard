@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { signIn } from "next-auth/react";
-import NextLink from "next/link";
+
 export default function Login() {
   const [formData, setFormData] = useState({
+    role: "",
     name: "",
     email: "",
     password: "",
@@ -22,6 +23,7 @@ export default function Login() {
 
     if (response.ok) {
       const result = await signIn("credentials", {
+        role: formData.role,
         name: formData.name,
         email: formData.email,
         password: formData.password,
@@ -47,6 +49,28 @@ export default function Login() {
           >
             <div className="text-center text-lg font-medium">
               {errorMessage && <p className="text-red-600">{errorMessage}</p>}
+            </div>
+
+            <div>
+              <label htmlFor="role" className="sr-only">
+                属性
+              </label>
+
+              <div className="relative">
+                <select
+                  className="w-full rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm"
+                  id="role"
+                  value={formData.role}
+                  onChange={(e) =>
+                    setFormData({ ...formData, role: e.target.value })
+                  }
+                  required
+                >
+                  <option value="">属性選択</option>
+                  <option value="JobSeeker">求職者</option>
+                  <option value="Recruiter">採用担当者</option>
+                </select>
+              </div>
             </div>
 
             <div>

@@ -1,4 +1,5 @@
 import { useForm } from "react-hook-form";
+import { getSession } from "next-auth/react";
 import {
   FormLabel,
   FormControl,
@@ -9,15 +10,21 @@ import {
   Textarea,
 } from "@chakra-ui/react";
 
+interface User {
+  id: number;
+  name: string;
+  email: string;
+}
+
 // フォームで使用する変数の型を定義
 type formInputs = {
+  company_id: number;
   feature: string;
   place: string;
   name: string;
 };
 
-const RegisterForm = () => {
-  // React Hook Formでバリデーションやフォームが送信されたときの処理などを書くために必要な記述
+export default function RegisterForm({ user }: { user: User }) {
   const {
     handleSubmit,
     register,
@@ -28,7 +35,6 @@ const RegisterForm = () => {
 
   // フォームが送信されたときの処理
   const onSubmit = handleSubmit(async (data) => {
-    console.log(data);
     try {
       const response = await fetch("/api/postData", {
         method: "POST",
@@ -38,7 +44,6 @@ const RegisterForm = () => {
         body: JSON.stringify(data),
       });
       const result = await response.json();
-      console.log(result);
     } catch (error) {
       console.error("Error inserting data:", error);
     }
@@ -46,7 +51,13 @@ const RegisterForm = () => {
 
   return (
     <Box maxW="800px" w="80%" m="100px auto">
+      <h1>{user.id}</h1>
+      <h1>{user.name}</h1>
       <form onSubmit={onSubmit}>
+        {/* 名前 */}
+        <FormControl mb={5} isInvalid={Boolean(errors.company_id)}>
+          <Input type="hidden" id="company_id" value={user.id} />
+        </FormControl>
         {/* 名前 */}
         <FormControl mb={5} isInvalid={Boolean(errors.name)}>
           <FormLabel htmlFor="name">企業名</FormLabel>
@@ -100,6 +111,21 @@ const RegisterForm = () => {
       </form>
     </Box>
   );
-};
+}
 
-export default RegisterForm;
+export async function getServerSideProps(context: any) {
+  const session = await getSession(context);
+
+  if (!session) {
+    return {
+      redirect: {
+        destination: "/",
+        permanent: false,
+      },
+    };
+  }
+
+  return {
+    props: { user: session.user },
+  };
+}

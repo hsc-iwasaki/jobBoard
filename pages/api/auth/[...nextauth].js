@@ -10,12 +10,14 @@ import bcrypt from "bcrypt";
 const { SECRET } = process.env;
 export const authOptions = {
   adapter: PrismaAdapter(prisma),
-  // Configure one or more authentication providers
+
   providers: [
     CredentialsProvider({
-      // サインインフォームに表示する名前 (例: "Sign in with...")
       name: "E-mail/Password",
       credentials: {
+        role: {
+          type: "text",
+        },
         name: {
           label: "name",
           type: "text",
@@ -31,6 +33,7 @@ export const authOptions = {
         session.user.id = user.sub;
         session.user.name = user.sub;
         session.user.email = user.sub;
+        session.user.role = user.sub;
         return Promise.resolve(session);
       },
       async authorize(credentials) {
@@ -41,7 +44,12 @@ export const authOptions = {
           user &&
           (await bcrypt.compare(credentials.password, user.password))
         ) {
-          return { id: user.id, name: user.name, email: user.email };
+          return {
+            id: user.id,
+            name: user.name,
+            email: user.email,
+            role: user.role,
+          };
         } else {
           throw new Error("Invalid email and/or password"); // This will display an error on the login page.
         }
@@ -64,8 +72,13 @@ export const authOptions = {
     }),
   ],
   callbacks: {
-    async session({ session, user, token }) {
-      session.accessToken = token.accessToken;
+    async session({ session, token }) {
+      const user = await prisma.user.findUnique({
+        where: { email: token.email },
+      });
+      session.user.id = user.id;
+      session.user.role = user.role;
+
       return session;
     },
     async jwt({ token, user, account, profile, isNewUser }) {
