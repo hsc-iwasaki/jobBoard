@@ -16,15 +16,18 @@ model User {
   createdAt DateTime    @default(now())
   updatedAt DateTime    @updatedAt
   applications Application[]
+  companies Company[]
 }
 
 enum UserRole {
+  Admin
   JobSeeker
   Recruiter
 }
 
 model Company {
   id            Int    @id @default(autoincrement())
+  recruiterId   Int
   name          String
   description   String?
   logo          String?
@@ -32,6 +35,7 @@ model Company {
   contactEmail  String
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
+  recruiter     User    @relation(fields: [recruiterId], references: [id])
   jobs          Job[]
 }
 
@@ -43,6 +47,7 @@ model Job {
   location    String
   salary      String?
   type        JobType
+  imageUrl    String?
   createdAt   DateTime     @default(now())
   updatedAt   DateTime     @updatedAt
   company     Company      @relation(fields: [companyId], references: [id])

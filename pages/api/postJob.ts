@@ -3,24 +3,25 @@ import { prisma } from "../lib/prisma";
 export default async function handler(req: any, res: any) {
   if (req.method === "POST") {
     try {
-      const { name, contactEmail, title, description, location, salary, type } =
-        req.body;
+      const {
+        companyId,
+        name,
+        contactEmail,
+        title,
+        description,
+        location,
+        salary,
+        type,
+      } = req.body;
 
-      const newJob = await prisma.company.create({
+      const newJob = await prisma.job.create({
         data: {
-          name: name,
-          contactEmail: contactEmail,
-          jobs: {
-            create: [
-              {
-                title: title,
-                description: description,
-                location: location,
-                salary: salary,
-                type: type,
-              },
-            ],
-          },
+          companyId: Number(companyId),
+          title: title,
+          description: description,
+          location: location,
+          salary: salary,
+          type: type,
         },
       });
       return res.status(200).json({ message: "求人情報を公開しました" });

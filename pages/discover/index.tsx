@@ -1,16 +1,22 @@
-import { SimpleGrid } from "@chakra-ui/react";
 import CardCompornent from "../../components/card";
-import { useState, useEffect } from "react";
-export async function getServerSideProps() {
-  const response = await fetch(`http://localhost:3000/api/getJob`);
+import { GetServerSideProps } from "next";
+
+export const getServerSideProps: GetServerSideProps = async () => {
+  const response = await fetch(`http://localhost:3000/api/getJobList`);
   const data = await response.json();
   return { props: { data } };
-}
+};
+
+type Company = {
+  name: string;
+};
 
 type JobItem = {
   id: number;
-  company_name: string;
-  work_place: string;
+  name: string;
+  title: string;
+  location: string;
+  company: Company;
 };
 
 type DataObject = {
@@ -21,15 +27,7 @@ const List: React.FC<DataObject> = ({ data }) => {
   return (
     <main>
       <h2>Job List</h2>
-      <SimpleGrid w="80%" m={"auto"} columns={4} spacing="40px">
-        {data.map((item) => (
-          <CardCompornent
-            key={item.id}
-            name={item.company_name}
-            subtitle={item.work_place}
-          ></CardCompornent>
-        ))}
-      </SimpleGrid>
+      <CardCompornent job={data}></CardCompornent>
     </main>
   );
 };

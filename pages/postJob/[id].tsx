@@ -1,6 +1,7 @@
 import { useForm } from "react-hook-form";
 import { useState } from "react";
 import { getSession } from "next-auth/react";
+import { useRouter } from "next/router";
 import {
   FormLabel,
   FormControl,
@@ -19,6 +20,7 @@ interface User {
 
 // フォームで使用する変数の型を定義
 type formInputs = {
+  companyId: number;
   name: string;
   contactEmail: string;
   title: string;
@@ -30,20 +32,8 @@ type formInputs = {
 
 export default function RegisterForm({ user }: { user: User }) {
   const [Message, setMessage] = useState(null);
-
+  const router = useRouter();
   const formFields = [
-    {
-      label: "企業名",
-      name: "name",
-      requiredMessage: "必須項目です",
-      component: "Input",
-    },
-    {
-      label: "連絡先メール",
-      name: "contactEmail",
-      requiredMessage: "必須項目です",
-      component: "Input",
-    },
     {
       label: "求人名",
       name: "title",
@@ -117,6 +107,16 @@ export default function RegisterForm({ user }: { user: User }) {
             <p className="text-sm">{Message}</p>
           </div>
         )}
+        <FormControl>
+          <Input
+            id="companyId"
+            value={router.query.id}
+            type="hidden"
+            {...register("companyId", {
+              required: "必須項目です",
+            })}
+          />
+        </FormControl>
         {formFields.map((field) => {
           let Component;
           if (field.component === "Textarea") {

@@ -34,6 +34,7 @@ export const authOptions = {
         session.user.name = user.sub;
         session.user.email = user.sub;
         session.user.role = user.sub;
+        session.user.companies = user.sub;
         return Promise.resolve(session);
       },
       async authorize(credentials) {
@@ -74,10 +75,17 @@ export const authOptions = {
   callbacks: {
     async session({ session, token }) {
       const user = await prisma.user.findUnique({
-        where: { email: token.email },
+        where: {
+          email: token.email, // User ID
+        },
+        include: {
+          companies: true, // Include related companies
+        },
       });
+
       session.user.id = user.id;
       session.user.role = user.role;
+      session.user.companies = user.companies;
 
       return session;
     },

@@ -95,7 +95,7 @@ export default function Login() {
             <p className="text-center text-sm text-gray-500">
               アカウント
               <NextLink
-                href="/register"
+                href="/auth/register"
                 className="underline"
                 aria-current="page"
               >
