@@ -19,7 +19,7 @@ model User {
 }
 
 enum UserRole {
-  JobSeeker 
+  JobSeeker
   Recruiter
 }
 
