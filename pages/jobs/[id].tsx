@@ -1,16 +1,21 @@
+import { prisma } from "@/lib/prisma";
+import NextLink from "next/link";
+import Modal from "@/components/modal";
 import { useState } from "react";
-import { getSession } from "next-auth/react";
-import { GetServerSideProps } from "next";
 import { useRouter } from "next/router";
-import { prisma } from "../lib/prisma";
-
 export default function Job({ job }) {
+  const router = useRouter();
+  job.company = router.query.company;
   return (
     <>
       <h1>{job.title}</h1>
       <div>{job.description}</div>
       <div>{job.location}</div>
       <div>{job.salary}</div>
+
+      <div>
+        <Modal data={job} />
+      </div>
     </>
   );
 }

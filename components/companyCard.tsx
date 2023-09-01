@@ -34,15 +34,19 @@ const CardCompany = ({ companies }: Props) => {
       </div>
 
       <ul className="flex flex-col divide-y divide w-full">
-        {companies.map(
+        {companies?.map(
           (item: {
             id: number;
             logo: string;
             name: string;
             updatedAt: string;
           }) => {
-            let imgSrc: string =
-              item.logo ?? "https://flowbite.com/docs/images/logo.svg";
+            let imgSrc: string;
+            if (item.logo) {
+              imgSrc = item.logo;
+            } else {
+              imgSrc = "https://flowbite.com/docs/images/logo.svg";
+            }
 
             // データベースから取得した日付
             const dateFromDatabase = item.updatedAt;

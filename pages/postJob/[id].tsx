@@ -37,30 +37,47 @@ export default function RegisterForm({ user }: { user: User }) {
     {
       label: "求人名",
       name: "title",
+      required: true,
       requiredMessage: "必須項目です",
       component: "Input",
+      type: "text",
+    },
+    {
+      label: "アイキャッチ画像",
+      name: "imageUrl",
+      required: false,
+      requiredMessage: "",
+      component: "Input",
+      type: "file",
     },
     {
       label: "詳細",
       name: "description",
+      required: true,
       requiredMessage: "必須項目です",
       component: "Textarea",
+      type: "text",
     },
     {
       label: "勤務地",
       name: "location",
+      required: true,
       requiredMessage: "必須項目です",
       component: "Input",
+      type: "text",
     },
     {
       label: "給与",
       name: "salary",
+      required: true,
       requiredMessage: "必須項目です",
       component: "Input",
+      type: "text",
     },
     {
       label: "雇用形態",
       name: "type",
+      required: true,
       requiredMessage: "必須項目です",
       component: "Select",
       options: [
@@ -68,6 +85,7 @@ export default function RegisterForm({ user }: { user: User }) {
         { value: "Contract", label: "契約社員" },
         { value: "PartTime", label: "アルバイト" },
       ],
+      type: "select",
     },
   ];
 
@@ -130,6 +148,7 @@ export default function RegisterForm({ user }: { user: User }) {
             <FormControl
               key={field.name}
               mb={5}
+              isRequired={field.required}
               isInvalid={Boolean(errors[field.name])}
             >
               <FormLabel htmlFor={field.name}>{field.label}</FormLabel>
@@ -139,15 +158,16 @@ export default function RegisterForm({ user }: { user: User }) {
               {field.component !== "Select" ? (
                 <Component
                   id={field.name}
+                  type={field.type} // 追加された部分
                   {...register(field.name, {
-                    required: field.requiredMessage,
+                    required: field.required ? field.requiredMessage : false,
                   })}
                 />
               ) : (
                 <Component
                   id={field.name}
                   {...register(field.name, {
-                    required: field.requiredMessage,
+                    required: field.required ? field.requiredMessage : false,
                   })}
                 >
                   {field.options.map((option, index) => (

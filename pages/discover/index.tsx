@@ -1,8 +1,8 @@
-import CardCompornent from "../../components/card";
+import CardCompornent from "@/components/card";
 import { GetServerSideProps } from "next";
 
 export const getServerSideProps: GetServerSideProps = async () => {
-  const response = await fetch(`http://localhost:3000/api/getJobList`);
+  const response = await fetch(`${process.env.DOMAIN}/api/getJobList`);
   const data = await response.json();
   return { props: { data } };
 };

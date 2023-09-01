@@ -1,5 +1,6 @@
-import { prisma } from "../lib/prisma";
-export default async function handler(req: any, res: any) {
+import { prisma } from "@/lib/prisma";
+
+export default async function handler(req, res) {
   try {
     const { id } = req.body;
     const job = await prisma.job.findUnique({

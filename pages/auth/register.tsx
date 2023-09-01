@@ -37,7 +37,6 @@ export default function Login() {
   return (
     <>
       <div className="mx-auto max-w-screen-xl px-4 py-16 sm:px-6 lg:px-8">
-        {errorMessage && <div className="error">{errorMessage}</div>}
         <div className="mx-auto max-w-lg">
           <h1 className="text-center text-2xl font-bold  sm:text-3xl">
             ユーザー登録

@@ -4,7 +4,7 @@ import { PrismaClient } from "@prisma/client";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import CredentialsProvider from "next-auth/providers/credentials";
 import EmailProvider from "next-auth/providers/email";
-import { prisma } from "../../lib/prisma";
+import { prisma } from "@/lib/prisma";
 import bcrypt from "bcrypt";
 
 const { SECRET } = process.env;
@@ -35,6 +35,13 @@ export const authOptions = {
         session.user.email = user.sub;
         session.user.role = user.sub;
         session.user.companies = user.sub;
+        session.user.ruby = user.sub;
+        session.user.birthday = user.sub;
+        session.user.gender = user.sub;
+        session.user.address = user.sub;
+        session.user.tel = user.sub;
+        session.user.graduation = user.sub;
+        session.usr.spouse = user.sub;
         return Promise.resolve(session);
       },
       async authorize(credentials) {
@@ -50,6 +57,13 @@ export const authOptions = {
             name: user.name,
             email: user.email,
             role: user.role,
+            ruby: user.ruby,
+            birthday: user.birthday,
+            gender: user.gender,
+            address: user.address,
+            ted: user.tel,
+            graduation: user.graduation,
+            spouse: user.spouse,
           };
         } else {
           throw new Error("Invalid email and/or password"); // This will display an error on the login page.
@@ -86,10 +100,21 @@ export const authOptions = {
       session.user.id = user.id;
       session.user.role = user.role;
       session.user.companies = user.companies;
+      session.user.ruby = user.ruby;
+      session.user.birthday = user.birthday;
+      session.user.gender = user.gender;
+      session.user.address = user.address;
+      session.user.ted = user.tel;
+      session.user.graduation = user.graduation;
+      session.user.spouse = user.spouse;
 
       return session;
     },
-    async jwt({ token, user, account, profile, isNewUser }) {
+    async jwt({ token, user, trigger, account, profile, isNewUser }) {
+      if (trigger === "update" && session?.user) {
+        // Note, that `session` can be any arbitrary object, remember to validate it!
+        token.name = session.user.name;
+      }
       if (account) token.accessToken = account.access_token;
       return token;
     },

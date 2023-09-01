@@ -1,6 +1,6 @@
 import { useForm } from "react-hook-form";
 import { useState } from "react";
-import { getSession } from "next-auth/react";
+
 import {
   FormLabel,
   FormControl,
@@ -10,6 +10,8 @@ import {
   Box,
   FormErrorMessage,
   Textarea,
+  Radio,
+  RadioGroup,
 } from "@chakra-ui/react";
 
 interface User {
@@ -33,44 +35,80 @@ export default function RegisterForm({ user }: { user: User }) {
 
   const formFields = [
     {
-      label: "企業名",
+      label: "氏名",
       name: "name",
       required: true,
       requiredMessage: "必須項目です",
       component: "Input",
       type: "text",
+      defaultValue: user.name,
     },
     {
-      label: "連絡先メール",
-      name: "contactEmail",
+      label: "フリガナ",
+      name: "ruby",
       required: true,
       requiredMessage: "必須項目です",
       component: "Input",
-      type: "email",
-    },
-    {
-      label: "企業PR",
-      name: "description",
-      required: true,
-      requiredMessage: "必須項目です",
-      component: "Textarea",
       type: "text",
+      defaultValue: "",
     },
     {
-      label: "企業ロゴ",
-      name: "logo",
-      required: false,
-      requiredMessage: "",
+      label: "生年月日",
+      name: "birthday",
+      required: true,
+      requiredMessage: "必須項目です",
       component: "Input",
-      type: "file",
+      type: "text",
+      defaultValue: "",
     },
     {
-      label: "ウェブサイト",
-      name: "website",
-      required: false,
-      requiredMessage: "",
+      name: "gender",
+      label: "性別",
+      type: "radio",
+      component: "Radio",
+      required: true,
+      requiredMessage: "性別の選択は必須です",
+      options: [
+        { value: "male", label: "男性" },
+        { value: "female", label: "女性" },
+      ],
+      defaultValue: "male", // ラジオボタンの初期値
+    },
+    {
+      label: "住所",
+      name: "address",
+      required: true,
+      requiredMessage: "必須項目です",
       component: "Input",
-      type: "url",
+      type: "text",
+      defaultValue: "",
+    },
+    {
+      label: "電話番号",
+      name: "tel",
+      required: true,
+      requiredMessage: "必須項目です",
+      component: "Input",
+      type: "text",
+      defaultValue: "",
+    },
+    {
+      label: "最終学歴",
+      name: "graduation",
+      required: true,
+      requiredMessage: "必須項目です",
+      component: "Input",
+      type: "text",
+      defaultValue: "",
+    },
+    {
+      label: "配偶者",
+      name: "marid",
+      required: true,
+      requiredMessage: "必須項目です",
+      component: "Input",
+      type: "text",
+      defaultValue: "",
     },
   ];
 
@@ -95,8 +133,6 @@ export default function RegisterForm({ user }: { user: User }) {
         body: JSON.stringify(data),
       });
       const result = await response.json();
-      console.log(result);
-      setMessage(result.message);
     } catch (error) {
       console.error("Error inserting data:", error);
     }
@@ -124,12 +160,17 @@ export default function RegisterForm({ user }: { user: User }) {
           />
         </FormControl>
         {formFields.map((field, index) => {
-          const Component =
-            field.component === "Textarea"
-              ? Textarea
-              : field.component === "Select"
-              ? Select
-              : Input;
+          let Component;
+
+          if (field.component === "Textarea") {
+            Component = Textarea;
+          } else if (field.component === "Select") {
+            Component = Select;
+          } else if (field.component === "Radio") {
+            Component = RadioGroup; // ここでラジオボタングループを使用するコンポーネントを選択
+          } else {
+            Component = Input;
+          }
 
           return (
             <FormControl
@@ -139,25 +180,39 @@ export default function RegisterForm({ user }: { user: User }) {
               isInvalid={Boolean(errors[field.name])}
             >
               <FormLabel htmlFor={field.name}>{field.label}</FormLabel>
-              <Component
-                id={field.name}
-                type={field.type}
-                {...register(field.name, {
-                  required: field.required ? field.requiredMessage : false,
-                })}
-              />
-              {field.options &&
-                field.options.map((option, i) => (
-                  <option key={i} value={option.value}>
-                    {option.label}
-                  </option>
-                ))}
+              {field.component === "Radio" ? (
+                <Component defaultValue={field.defaultValue}>
+                  {field.options &&
+                    field.options.map((option, i) => (
+                      <Radio key={i} value={option.value}>
+                        {option.label}
+                      </Radio>
+                    ))}
+                </Component>
+              ) : (
+                <Component
+                  id={field.name}
+                  type={field.type}
+                  defaultValue={field.defaultValue}
+                  {...register(field.name, {
+                    required: field.required ? field.requiredMessage : false,
+                  })}
+                >
+                  {field.options &&
+                    field.options.map((option, i) => (
+                      <option key={i} value={option.value}>
+                        {option.label}
+                      </option>
+                    ))}
+                </Component>
+              )}
               <FormErrorMessage>
                 {errors[field.name] && errors[field.name].message}
               </FormErrorMessage>
             </FormControl>
           );
         })}
+
         <Button
           m="50px auto"
           display="block"

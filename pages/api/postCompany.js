@@ -1,6 +1,6 @@
-import { prisma } from "../lib/prisma";
+import { prisma } from "@/lib/prisma";
 
-export default async function handler(req: any, res: any) {
+export default async function handler(req, res) {
   if (req.method === "POST") {
     try {
       const { recruiterId, name, contactEmail, description, logo, website } =
@@ -16,8 +16,9 @@ export default async function handler(req: any, res: any) {
           website: website,
         },
       });
+
       return res.status(200).json({ message: "会社情報を登録しました" });
-    } catch (error: any) {
+    } catch (error) {
       res.status(400).json({ error: error.message });
     }
   }

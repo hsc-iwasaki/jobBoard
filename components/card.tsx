@@ -27,7 +27,6 @@ interface Props {
 }
 
 const CardCompornent = ({ job }: { job: Props }) => {
-  console.log(job);
   return (
     <>
       <SimpleGrid w="80%" m={"auto"} columns={4} spacing="40px">
@@ -56,7 +55,7 @@ const CardCompornent = ({ job }: { job: Props }) => {
                   <ButtonGroup spacing="2">
                     <NextLink
                       className="bg-blue-600 hover:bg-blue-500 text-white rounded px-4 py-2"
-                      href={`/jobs/${item.id}`}
+                      href={`/jobs/${item.id}?company=${item.company.name}&title=${item.title}`}
                       passHref
                     >
                       求人詳細
