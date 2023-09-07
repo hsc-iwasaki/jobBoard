@@ -22,12 +22,6 @@ export default function Login() {
     });
 
     if (response.ok) {
-      const result = await signIn("credentials", {
-        role: formData.role,
-        name: formData.name,
-        email: formData.email,
-        password: formData.password,
-      });
     } else {
       const data = await response.json();
       setErrorMessage(data.error);

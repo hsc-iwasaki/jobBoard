@@ -1,5 +1,7 @@
 import { prisma } from "@/lib/prisma";
 import bcrypt from "bcrypt";
+import { getUniqueStr } from "@/lib/getUniqueStr";
+import { sendMail } from "@/lib/mailer";
 export default async function handler(req, res) {
   if (req.method === "POST") {
     try {
@@ -12,17 +14,29 @@ export default async function handler(req, res) {
       if (user) {
         throw new Error("このメールアドレスは既に使用されています");
       }
-      const hashedPassword = await bcrypt.hash(password, 10);
-      const newUser = await prisma.user.create({
+      const token = getUniqueStr();
+
+      const date = new Date();
+      const result = await prisma.verificationToken.create({
         data: {
-          role: role,
+          identifier: email,
+          token: token,
           name: name,
-          email: email,
-          password: hashedPassword,
+          role: role,
+          expires: date,
+          password: password,
         },
       });
-
-      return res.status(200).json({ message: "登録が完了しました" });
+      await sendMail(
+        `ichiwak登録認証メール`,
+        email,
+        `
+        <a href="${process.env.DOMAIN}/verify?token=${token}">クリックして登録を完了してください</a>
+        `
+      );
+      return res.status(200).json({
+        message: "認証メールを送信しました",
+      });
     } catch (error) {
       res.status(400).json({ error: error.message });
     }

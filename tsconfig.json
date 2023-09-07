@@ -29,7 +29,9 @@
     "**/*.tsx",
     ".next/types/**/*.ts",
     "pages/api/postCompany.js",
-    "components/modalContent.tsx"
+    "components/modalContent.tsx",
+    "pages/api/verify.js_",
+    "pages/verify/index.tsx_"
   ],
   "exclude": ["node_modules"]
 }

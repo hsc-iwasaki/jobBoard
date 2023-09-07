@@ -20,10 +20,14 @@ export default function Login() {
     });
 
     if (response.ok) {
-      const result = await signIn("credentials", {
-        email: formData.email,
-        password: formData.password,
-      });
+      const result = await signIn(
+        "credentials",
+        {
+          email: formData.email,
+          password: formData.password,
+        },
+        { callbackUrl: `${process.env.NEXT_PUBLIC_BASE_URL}/discover` }
+      );
     } else {
       const data = await response.json();
       setErrorMessage(data.error);

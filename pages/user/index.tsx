@@ -37,7 +37,7 @@ interface User {
 
 export default function User({ user }: { user: User | null }) {
   if (!user) {
-    return <div>Loading...</div>; // or you can return null or some other placeholder
+    return <button onClick={() => signOut()}>Sign out</button>; // or you can return null or some other placeholder
   }
   if (user.role == "Recruiter" || user.role == "Admin") {
     return (
@@ -320,9 +320,9 @@ export async function getServerSideProps(context: any) {
       // UserのDateフィールドを文字列に変換
       user.createdAt = user.createdAt.toISOString();
       user.updatedAt = user.updatedAt.toISOString();
+      user.emailVerified = user.emailVerified.toISOString();
 
-      // 関連するCompanyのDateフィールドも文字列に変換
-      user.companies = user.companies.map((company) => {
+      user.emailVerified.map((company) => {
         return {
           ...company,
           createdAt: company.createdAt.toISOString(),

@@ -14,7 +14,7 @@ export async function sendMail(subject, toEmail, otpText) {
     from: "no-reply@ichiwak.com",
     to: toEmail,
     subject: subject,
-    text: otpText,
+    html: otpText,
   };
 
   transporter.sendMail(mailOptions, function (error, info) {

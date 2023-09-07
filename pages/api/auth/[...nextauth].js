@@ -61,12 +61,12 @@ export const authOptions = {
             birthday: user.birthday,
             gender: user.gender,
             address: user.address,
-            ted: user.tel,
+            tel: user.tel,
             graduation: user.graduation,
             spouse: user.spouse,
           };
         } else {
-          throw new Error("Invalid email and/or password"); // This will display an error on the login page.
+          throw new Error("Invalid email and/or password");
         }
       },
     }),
@@ -90,13 +90,12 @@ export const authOptions = {
     async session({ session, token }) {
       const user = await prisma.user.findUnique({
         where: {
-          email: token.email, // User ID
+          email: token.email,
         },
         include: {
-          companies: true, // Include related companies
+          companies: true,
         },
       });
-
       session.user.id = user.id;
       session.user.role = user.role;
       session.user.companies = user.companies;
@@ -110,9 +109,9 @@ export const authOptions = {
 
       return session;
     },
+
     async jwt({ token, user, trigger, account, profile, isNewUser }) {
       if (trigger === "update" && session?.user) {
-        // Note, that `session` can be any arbitrary object, remember to validate it!
         token.name = session.user.name;
       }
       if (account) token.accessToken = account.access_token;
@@ -121,9 +120,6 @@ export const authOptions = {
   },
   session: {
     strategy: "jwt",
-  },
-  pages: {
-    newUser: "/auth/new-user", // New users will be directed here on first sign in (leave the property out if not of interest)
   },
   secret: SECRET,
 };
