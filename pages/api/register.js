@@ -15,7 +15,7 @@ export default async function handler(req, res) {
         throw new Error("このメールアドレスは既に使用されています");
       }
       const token = getUniqueStr();
-
+      const hashedPassword = await bcrypt.hash(password, 10);
       const date = new Date();
       const result = await prisma.verificationToken.create({
         data: {
@@ -24,7 +24,7 @@ export default async function handler(req, res) {
           name: name,
           role: role,
           expires: date,
-          password: password,
+          password: hashedPassword,
         },
       });
       await sendMail(

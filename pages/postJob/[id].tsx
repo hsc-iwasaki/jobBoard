@@ -2,6 +2,7 @@ import { useForm } from "react-hook-form";
 import { useState } from "react";
 import { getSession } from "next-auth/react";
 import { useRouter } from "next/router";
+import { uploadPhoto } from "@/lib/imagePost";
 import {
   FormLabel,
   FormControl,
@@ -100,6 +101,8 @@ export default function RegisterForm({ user }: { user: User }) {
   // フォームが送信されたときの処理
   const onSubmit = handleSubmit(async (data) => {
     try {
+      const url = data.imageUrl[0] ? await uploadPhoto(data.imageUrl) : null;
+      data.imageUrl = url;
       const response = await fetch("/api/postJob", {
         method: "POST",
         headers: {

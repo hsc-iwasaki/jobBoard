@@ -1,7 +1,6 @@
 import { useSession } from "next-auth/react";
 import { Image } from "@chakra-ui/react";
 import NextLink from "next/link";
-
 export default function Header() {
   const { data: session } = useSession();
   let imgSrc: string =
@@ -9,8 +8,12 @@ export default function Header() {
   if (session) {
     return (
       <>
-        <NextLink href="/user">
-          <img src={imgSrc} className=" h-6 sm:h-9" alt="userLogo" />
+        <NextLink
+          href="/user"
+          className="w-8 h-8 flex justify-center items-center overflow-hidden rounded-full"
+          passHref
+        >
+          <img className="w-full" src={imgSrc} alt="user logo" />
         </NextLink>
       </>
     );

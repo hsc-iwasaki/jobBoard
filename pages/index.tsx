@@ -1,3 +1,10 @@
+import { Image } from "@chakra-ui/react";
+
 export default function Home() {
-  return <h1>Hello Next.js</h1>;
+  return (
+    <div>
+      {/* その他のルートページのコンテンツ */}
+      Welcome to the homepage!
+    </div>
+  );
 }

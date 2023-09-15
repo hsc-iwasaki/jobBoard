@@ -1,3 +1,8 @@
 @import "tailwindcss/base";
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
+@import url("http://fonts.googleapis.com/earlyaccess/notosansjp.css");
+@import url("https://use.typekit.net/wbz8xwe.css");
+body {
+  font-family: "century-gothic", "Noto Sans JP", sans-serif !important;
+}

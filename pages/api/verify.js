@@ -16,13 +16,12 @@ export default async function handler(req, res) {
       throw new Error("登録できませんでした");
     }
     const password = verify.password;
-    const hashedPassword = await bcrypt.hash(password, 10);
     const user = await prisma.user.create({
       data: {
         name: verify.name,
         email: verify.identifier,
         emailVerified: new Date(),
-        password: hashedPassword,
+        password: password,
         role: verify.role,
       },
     });

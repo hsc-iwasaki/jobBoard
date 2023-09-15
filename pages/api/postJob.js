@@ -5,19 +5,18 @@ export default async function handler(req, res) {
     try {
       const {
         companyId,
-        name,
-        contactEmail,
+        imageUrl,
         title,
         description,
         location,
         salary,
         type,
       } = req.body;
-
       const newJob = await prisma.job.create({
         data: {
           companyId: Number(companyId),
           title: title,
+          imageUrl: imageUrl,
           description: description,
           location: location,
           salary: salary,

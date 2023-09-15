@@ -29,21 +29,6 @@ export const authOptions = {
         },
         password: { label: "パスワード", type: "password" },
       },
-      async session(session, user) {
-        session.user.id = user.sub;
-        session.user.name = user.sub;
-        session.user.email = user.sub;
-        session.user.role = user.sub;
-        session.user.companies = user.sub;
-        session.user.ruby = user.sub;
-        session.user.birthday = user.sub;
-        session.user.gender = user.sub;
-        session.user.address = user.sub;
-        session.user.tel = user.sub;
-        session.user.graduation = user.sub;
-        session.usr.spouse = user.sub;
-        return Promise.resolve(session);
-      },
       async authorize(credentials) {
         const user = await prisma.user.findUnique({
           where: { email: credentials.email },
@@ -98,6 +83,7 @@ export const authOptions = {
       });
       session.user.id = user.id;
       session.user.role = user.role;
+      session.user.image = user.image;
       session.user.companies = user.companies;
       session.user.ruby = user.ruby;
       session.user.birthday = user.birthday;

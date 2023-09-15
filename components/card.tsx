@@ -26,49 +26,51 @@ interface Props {
   name: string;
 }
 
-const CardCompornent = ({ job }: { job: Props }) => {
+const CardComponent = ({ job }: { job: Props }) => {
   return (
-    <>
-      <SimpleGrid w="80%" m={"auto"} columns={4} spacing="40px">
-        {job.map(
-          (item: {
-            id: number;
-            title: string;
-            name: string;
-            imageUrl: string;
-            company: object;
-            salary: string;
-          }) => {
-            let imgSrc: string =
-              item.imageUrl ?? "/images/AdobeStock_101676859.jpeg";
-            return (
-              <Card maxW="sm" key={item.id}>
-                <CardBody>
-                  <Image src={imgSrc} alt="メイン写真" borderRadius="lg" />
-                  <Stack mt="6" spacing="3">
-                    <Heading size="md">{item.company.name}</Heading>
-                    <Text>{item.title}</Text>
-                    <Text>給与 : {item.salary}</Text>
-                  </Stack>
-                </CardBody>
-                <CardFooter>
-                  <ButtonGroup spacing="2">
-                    <NextLink
-                      className="bg-blue-600 hover:bg-blue-500 text-white rounded px-4 py-2"
-                      href={`/jobs/${item.id}?company=${item.company.name}&title=${item.title}`}
-                      passHref
-                    >
-                      求人詳細
-                    </NextLink>
-                  </ButtonGroup>
-                </CardFooter>
-              </Card>
-            );
-          }
-        )}
-      </SimpleGrid>
-    </>
+    <div className="w-4/5 mx-auto my-20 flex justify-center flex-wrap gap-10">
+      {job.map(
+        (item: {
+          id: number;
+          title: string;
+          name: string;
+          imageUrl: string;
+          company: object;
+          salary: string;
+        }) => {
+          let imgSrc: string =
+            item.imageUrl ?? "/images/AdobeStock_101676859.jpeg";
+          return (
+            <div
+              key={item.id}
+              className="w-80 bg-white shadow-lg rounded-lg overflow-hidden"
+            >
+              <div className="flex justify-center items-center p-4">
+                <Image
+                  src={imgSrc}
+                  alt="メイン写真"
+                  className="h-48 object-cover rounded"
+                />
+              </div>
+              <div className="p-4 space-y-3">
+                <h2 className="text-lg font-semibold">{item.company.name}</h2>
+                <p>{item.title}</p>
+                <p>給与 : {item.salary}</p>
+              </div>
+              <div className="bg-gray-100 p-4 border-t border-gray-200">
+                <a
+                  className="bg-blue-600 hover:bg-blue-500 text-white rounded px-4 py-2"
+                  href={`/jobs/${item.id}?company=${item.company.name}&title=${item.title}`}
+                >
+                  求人詳細
+                </a>
+              </div>
+            </div>
+          );
+        }
+      )}
+    </div>
   );
 };
 
-export default CardCompornent;
+export default CardComponent;
