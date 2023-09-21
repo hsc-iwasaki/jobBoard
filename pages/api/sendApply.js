@@ -27,36 +27,46 @@ export default async function handler(req, res) {
     });
 
     const { method } = req;
+
+    const recruiterMessage = `<p>${job.title}に応募がありました</p>
+    <p>■応募者情報</p>
+    <p>--------------------------</p>
+    <p>■氏名</p>
+    <p>${user.name}</p>
+
+    <p>■フリガナ</p>
+    <p>${user.ruby}</p>
+    
+    <p>■Email</p>
+    <p>${user.email}</p>
+    
+    <p>■生年月日</p>
+    <p>${user.birthday}</p>
+    
+    <p>■性別</p>
+    <p>${user.gender}</p>
+    
+    <p>■配偶者</p>
+    <p>${user.spouse}</p>
+    `;
+
+    const userMessage = `<p>${job.title}にご応募ありがとうございました</p>
+    <p>担当者からの連絡をお待ちください</p>
+    `;
+
     switch (method) {
       case "POST": {
         await sendMail(
           `${job.title}に応募がありました`,
           company.recruiter.email,
-          `
-          ${job.title}に応募がありました
-          
-          ■応募者情報
-          --------------------------
-          ■氏名
-          ${user.name}
-          
-          ■フリガナ
-          ${user.ruby}
-          
-          ■Email
-          ${user.email}
-
-          ■生年月日
-          ${user.birthday}
-
-          ■性別
-          ${user.gender}
-
-          ■配偶者
-          ${user.spouse}
-          `
+          recruiterMessage
         );
-        res.status(200).send("Success");
+        await sendMail(
+          `${job.title}に応募ご応募ありがとうございました`,
+          user.email,
+          userMessage
+        );
+        res.json({ message: "求人に応募しました" });
         break;
       }
       case "GET": {

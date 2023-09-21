@@ -27,28 +27,32 @@ export default function User({ user }: { user: User | null }) {
   if (!user) {
     return <button onClick={() => signOut()}>Sign out</button>; // or you can return null or some other placeholder
   }
-  if (user.role == "Recruiter" || user.role == "Admin") {
+  if (user.role == "Recruiter") {
     return (
       <>
-        <h1>{user.name}</h1>
-        <h1>{user.email}</h1>
         <div>
           <div>
             <CompanyCard companies={user.companies}></CompanyCard>
           </div>
-          <div></div>
-        </div>
-        <div>
-          <button onClick={() => signOut()}>Sign out</button>
         </div>
       </>
     );
-  } else {
+  }
+  if (user.role == "JobSeeker") {
     return (
       <>
         <Userform user={user} />
+      </>
+    );
+  }
+  if (user.role == "Admin") {
+    return (
+      <>
+        {/* <div>
+          <CompanyCard companies={user.companies}></CompanyCard>
+        </div> */}
         <div>
-          <button onClick={() => signOut()}>Sign out</button>
+          <Userform user={user} />
         </div>
       </>
     );
@@ -74,7 +78,11 @@ export async function getServerSideProps(context: any) {
         email: session?.user?.email,
       },
       include: {
-        companies: true, // ここを想定しています
+        companies: {
+          include: {
+            jobs: true,
+          },
+        },
       },
     });
 
@@ -86,8 +94,18 @@ export async function getServerSideProps(context: any) {
 
       // companiesのDateフィールドを文字列に変換
       user.companies = user.companies.map((company) => {
+        // 各companyのjobsのDateフィールドも文字列に変換
+        const updatedJobs = company.jobs.map((job) => {
+          return {
+            ...job,
+            createdAt: job.createdAt.toISOString(),
+            updatedAt: job.updatedAt.toISOString(),
+          };
+        });
+
         return {
           ...company,
+          jobs: updatedJobs, // 更新されたjobsをcompanyに再代入
           createdAt: company.createdAt.toISOString(),
           updatedAt: company.updatedAt.toISOString(),
         };

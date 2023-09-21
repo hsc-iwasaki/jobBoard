@@ -1,6 +1,7 @@
 import { useForm } from "react-hook-form";
 import { useState } from "react";
 import { getSession } from "next-auth/react";
+import { uploadPhoto } from "@/lib/imagePost";
 import {
   FormLabel,
   FormControl,
@@ -83,9 +84,8 @@ export default function RegisterForm({ user }: { user: User }) {
 
   // フォームが送信されたときの処理
   const onSubmit = handleSubmit(async (data) => {
-    if (data.logo.length == 0) {
-      data.logo = null;
-    }
+    const url = data.logo[0] ? await uploadPhoto(data.logo) : null;
+    data.logo = url;
     try {
       const response = await fetch("/api/postCompany", {
         method: "POST",

@@ -89,7 +89,7 @@ export const authOptions = {
       session.user.birthday = user.birthday;
       session.user.gender = user.gender;
       session.user.address = user.address;
-      session.user.ted = user.tel;
+      session.user.tel = user.tel;
       session.user.graduation = user.graduation;
       session.user.spouse = user.spouse;
 

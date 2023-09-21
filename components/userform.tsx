@@ -35,6 +35,7 @@ export const Userform = ({ user }: { user: Props }) => {
   const [Gender, setGender] = useState(null);
   const [Spouse, setSpouse] = useState(null);
   const { data: session, status, update } = useSession();
+
   const formFields = [
     {
       label: "氏名",
@@ -152,6 +153,11 @@ export const Userform = ({ user }: { user: Props }) => {
       );
       const result = await response.json();
       setMessage(result.message);
+
+      const timer = setTimeout(() => {
+        setMessage(null);
+      }, 3000);
+      return () => clearTimeout(timer);
     } catch (error) {
       console.error("Error inserting data:", error);
     }
@@ -159,8 +165,10 @@ export const Userform = ({ user }: { user: Props }) => {
   return (
     <>
       <div className="w-1/2 mx-auto">
-        <h2>プロフィール編集</h2>
-        <Box maxW="800px" w="80%" m="100px auto">
+        <h2 className="text-center mt-20 text-xl font-bold">
+          プロフィール編集
+        </h2>
+        <Box maxW="800px" w="80%" m="75px auto">
           <form onSubmit={onSubmit}>
             {Message && (
               <div

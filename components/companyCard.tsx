@@ -1,20 +1,24 @@
-import Image from "next/image";
+import { useState } from "react";
 import NextLink from "next/link";
-interface Props {
-  id: number;
-  logo: string;
-  name: string;
-  updatedAt: string;
-}
 
 interface Props {
-  companies: [];
+  companies: {
+    id: number;
+    logo: string;
+    name: string;
+    updatedAt: string;
+    jobs: { title: string }[];
+  }[];
 }
 
 const CardCompany = ({ companies }: Props) => {
+  // アコーディオンの開閉状態を格納する配列
+  const [isOpenArray, setIsOpenArray] = useState<boolean[]>(
+    companies.map(() => true)
+  );
   return (
-    <div className="container flex flex-col items-center justify-center w-full mx-auto bg-white rounded-lg shadow dark:bg-gray-800">
-      <div className="flex justify-between w-full px-4 py-5 border-b sm:px-6">
+    <div className="mt-56 container flex flex-col items-center justify-center max-w-4xl w-full mx-auto bg-white rounded-lg shadow dark:bg-gray-800">
+      <div className="flex justify-between w-full px-4 py-5 border-b sm:px-6 bg-gray-100">
         <div>
           <h3 className="text-lg font-medium leading-6 text-gray-900 dark:text-white">
             会社情報
@@ -25,53 +29,44 @@ const CardCompany = ({ companies }: Props) => {
         </div>
         <div>
           <NextLink
-            className="inline-block my-3 text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800"
+            className="inline-block my-3 text-white bg-green-500 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 dark:bg-green-600 dark:hover:bg-green-700 focus:outline-none dark:focus:ring-green-800"
             href="/company/form"
           >
-            会社情報を追加
+            会社を追加
           </NextLink>
         </div>
       </div>
 
       <ul className="flex flex-col divide-y divide w-full">
-        {companies?.map(
-          (item: {
-            id: number;
-            logo: string;
-            name: string;
-            updatedAt: string;
-          }) => {
-            let imgSrc: string;
-            if (item.logo) {
-              imgSrc = item.logo;
-            } else {
-              imgSrc = "https://flowbite.com/docs/images/logo.svg";
-            }
+        {companies.map((item, index) => {
+          let imgSrc: string;
+          if (item.logo) {
+            imgSrc = item.logo;
+          } else {
+            imgSrc = "https://flowbite.com/docs/images/logo.svg";
+          }
 
-            // データベースから取得した日付
-            const dateFromDatabase = item.updatedAt;
+          const dateFromDatabase = item.updatedAt;
+          const dateObj = new Date(dateFromDatabase);
+          const year = dateObj.getFullYear();
+          const month = dateObj.getMonth() + 1;
+          const day = dateObj.getDate();
+          const formattedDate = `${year}年${month}月${day}日`;
 
-            // Dateオブジェクトを作成
-            const dateObj = new Date(dateFromDatabase);
-
-            // 年、月、日を取得
-            const year = dateObj.getFullYear();
-            const month = dateObj.getMonth() + 1; // JavaScriptの月は0から始まるので、+1する
-            const day = dateObj.getDate();
-
-            // "1991年10月28日"のようにフォーマット
-            const formattedDate = `${year}年${month}月${day}日`;
-
-            return (
-              <li className="flex flex-row" key={item.name}>
+          return (
+            <div key={index}>
+              <li
+                className="flex flex-row"
+                onClick={() => {
+                  let updatedIsOpenArray = [...isOpenArray];
+                  updatedIsOpenArray[index] = !updatedIsOpenArray[index];
+                  setIsOpenArray(updatedIsOpenArray);
+                }}
+              >
                 <div className="flex items-center flex-1 p-4 cursor-pointer select-none">
                   <div className="flex flex-col items-center justify-center w-10 h-10 mr-4">
                     <NextLink href="/company">
-                      <img
-                        src={imgSrc}
-                        className=" h-6 sm:h-9"
-                        alt="companyLogo"
-                      />
+                      <img src={imgSrc} className="w-full" alt="companyLogo" />
                     </NextLink>
                   </div>
                   <div className="flex-1 pl-1 mr-16">
@@ -80,16 +75,38 @@ const CardCompany = ({ companies }: Props) => {
                     </div>
                   </div>
                   <NextLink
-                    className="mx-5 text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800"
+                    className="mx-5 text-green-500 border border-green-500 bg-white hover:bg-green-500 hover:text-white focus:ring-4 focus:ring-green-300 rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 dark:bg-green-600 dark:hover:bg-green-700 focus:outline-none dark:focus:ring-green-800"
                     href={`/postJob/${item.id}`}
                   >
-                    求人情報を追加
+                    求人を追加
                   </NextLink>
                 </div>
               </li>
-            );
-          }
-        )}
+              <div
+                className={`transition-max-height duration-300  ${
+                  isOpenArray[index]
+                    ? "max-h-[500px]"
+                    : "max-h-0 overflow-hidden"
+                }`}
+              >
+                <div className="p-4 bg-gray-100">
+                  {item.jobs.map((job, index) => (
+                    <div key={index} className="">
+                      <NextLink
+                        className="w-full inline-block hover:font-bold"
+                        href={`/edit/job?id=${job.id}`}
+                      >
+                        {job.title.length > 20
+                          ? job.title.slice(0, 20) + "..."
+                          : job.title}
+                      </NextLink>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          );
+        })}
       </ul>
     </div>
   );

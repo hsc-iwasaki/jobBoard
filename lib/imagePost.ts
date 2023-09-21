@@ -1,12 +1,17 @@
+import { getUniqueStr } from "@/lib/getUniqueStr";
 export const uploadPhoto = async (
   e: React.ChangeEvent<HTMLInputElement>
 ): Promise<string | null> => {
-  const file = e[0]; // ここを修正
+  const file = e[0];
+  console.log(file);
+  if (!file) {
+    return null;
+  }
   const filename = encodeURIComponent(file.name);
   const fileType = encodeURIComponent(file.type);
-
+  const token = getUniqueStr();
   const res = await fetch(
-    `/api/upload-url?file=${filename}&fileType=${fileType}`
+    `/api/upload-url?file=${token}${filename}&fileType=${fileType}`
   );
 
   const { url, fields } = await res.json();

@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/router";
 import { signIn } from "next-auth/react";
 import NextLink from "next/link";
 export default function Login() {
@@ -7,6 +8,26 @@ export default function Login() {
     password: "",
   });
   const [errorMessage, setErrorMessage] = useState(null);
+  const [Message, setMessage] = useState(null);
+  const router = useRouter();
+  useEffect(() => {
+    if (router.query.message === "login_required") {
+      setMessage("ログインしてください");
+      // 3秒後にメッセージを消す
+      const timer = setTimeout(() => {
+        setMessage(null);
+      }, 3000);
+      return () => clearTimeout(timer);
+    }
+    if (router.query.message === "register_complete") {
+      setMessage("登録が完了しました");
+      // 3秒後にメッセージを消す
+      const timer = setTimeout(() => {
+        setMessage(null);
+      }, 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [router.query]);
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
@@ -37,6 +58,14 @@ export default function Login() {
   return (
     <>
       <div className="mx-auto max-w-screen-xl px-4 py-16 sm:px-6 lg:px-8">
+        {Message && (
+          <div
+            className="fixed top-5 left-0 right-0 w-1/2 mx-auto rounded z-[51] items-center bg-green-500 text-white text-sm font-bold px-4 py-3"
+            role="alert"
+          >
+            <p className="text-sm">{Message}</p>
+          </div>
+        )}
         <div className="mx-auto max-w-lg">
           <h1 className="text-center text-2xl font-bold  sm:text-3xl">
             ログイン
@@ -48,7 +77,6 @@ export default function Login() {
             <div className="text-center text-lg font-medium">
               {errorMessage && <p className="text-red-600">{errorMessage}</p>}
             </div>
-
             <div>
               <label htmlFor="email" className="sr-only">
                 Email

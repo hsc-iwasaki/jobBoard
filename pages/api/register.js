@@ -31,7 +31,7 @@ export default async function handler(req, res) {
         `ichiwak登録認証メール`,
         email,
         `
-        <a href="${process.env.DOMAIN}/verify?token=${token}">クリックして登録を完了してください</a>
+        <a href="${process.env.DOMAIN}/verify?token=${token}&message=register_complete">クリックして登録を完了してください</a>
         `
       );
       return res.status(200).json({
