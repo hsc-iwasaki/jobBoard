@@ -7,7 +7,6 @@ import EmailProvider from "next-auth/providers/email";
 import { prisma } from "@/lib/prisma";
 import bcrypt from "bcrypt";
 
-const { SECRET } = process.env;
 export const authOptions = {
   adapter: PrismaAdapter(prisma),
 
@@ -110,6 +109,6 @@ export const authOptions = {
   session: {
     strategy: "jwt",
   },
-  secret: SECRET,
+  secret: process.env.NEXT_PUBLIC_SECRET,
 };
 export default NextAuth(authOptions);
