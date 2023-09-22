@@ -1,9 +1,22 @@
-import { useState } from "react";
+import { useState, ReactNode } from "react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import NextLink from "next/link";
+
+type UserExtended = {
+  address?: string;
+  birthday?: string;
+  gender?: string;
+  ruby?: string;
+  graduation?: string;
+  spouse?: string;
+  tel?: string;
+};
+
 type Data = {
-  company: string;
+  company: {
+    name: string;
+  };
   id: number;
   title: string;
   name: string;
@@ -11,28 +24,35 @@ type Data = {
   salary: string;
 };
 
-const Modal = (data: { data: Data }) => {
-  const job = data.data;
-  const { data: session, status, update } = useSession();
-  const [Message, setMessage] = useState(null);
-  const [isOpen, setIsOpen] = useState(false);
-  const router = useRouter();
-  const user = session?.user;
-  const toggleModal = () => {
-    setIsOpen((prevState) => !prevState); // prevStateを使う
-  };
+interface ModalProps {
+  data: Data;
+}
 
+const Modal: React.FC<ModalProps> = ({ data }) => {
+  const job = data;
+  const { data: session, status, update } = useSession();
+  const [Message, setMessage] = useState<string | null>(null);
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const router = useRouter();
+  const user = session?.user as unknown as UserExtended; // Extended user type
+
+  const toggleModal = () => {
+    setIsOpen((prevState) => !prevState);
+  };
   const handleSubmit = async () => {
     try {
       const responce = await fetch("/api/sendApply", {
         method: "POST",
         body: JSON.stringify({
           job: job,
-          user: session.user,
+          user: session?.user,
         }),
       });
       const result = await responce.json();
       setMessage(result.message);
+      await new Promise((resolve) => setTimeout(resolve, 1500));
+      setMessage(null);
+      toggleModal();
     } catch (error) {
       console.error("Error inserting data:", error);
     }
@@ -65,7 +85,7 @@ const Modal = (data: { data: Data }) => {
       {isOpen && (
         <div
           id="defaultModal"
-          tabIndex="-1"
+          tabIndex={-1}
           aria-hidden="true"
           className="fixed top-0 left-0 right-0 m-0 z-50  w-full overflow-x-hidden overflow-y-auto md:inset-0 max-h-full bg-gray-500 bg-opacity-80"
         >

@@ -8,22 +8,8 @@ import { useState } from "react";
 import { useRouter } from "next/router";
 import { prisma } from "../../lib/prisma";
 import { Userform } from "@/components/userform";
-interface User {
-  birthday: any;
-  ruby: any;
-  tel: any;
-  graduation: any;
-  spouse: any;
-  address: any;
-  gender: string;
-  role: string;
-  email: string;
-  image: string;
-  name: string;
-  companies: object;
-}
 
-export default function User({ user }: { user: User | null }) {
+export default function User(user) {
   if (!user) {
     return <button onClick={() => signOut()}>Sign out</button>; // or you can return null or some other placeholder
   }
@@ -59,7 +45,7 @@ export default function User({ user }: { user: User | null }) {
   }
 }
 
-export async function getServerSideProps(context: any) {
+export async function getServerSideProps(context) {
   const session = await getSession(context);
   if (!session) {
     return {

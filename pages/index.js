@@ -192,27 +192,27 @@ export default function Home() {
               </div>
               <div className="line md:pt-14 pt-8 xl:text-right text-center">
                 市原市での働き方を
-                <br />
+                <br className="xl:hidden" />
                 全く新しい視点から探求します。
               </div>
               <div className="line md:pt-14 pt-8 xl:text-right text-center">
                 どんな夢を抱いていても、
-                <br />
+                <br className="xl:hidden" />
                 どんなキャリアを目指していても、
               </div>
               <div className="line md:pt-14 pt-8 xl:text-right text-center">
                 ここ市原市で
-                <br />
+                <br className="xl:hidden" />
                 その実現のチャンスを見つけましょう。
               </div>
               <div className="line md:pt-14 pt-8 xl:text-right text-center">
                 「いちはらで働こう！」
-                <br />
+                <br className="xl:hidden" />
                 という一歩を踏み出す勇気、
               </div>
               <div className="line md:pt-14 pt-8 xl:text-right text-center">
                 私たちは
-                <br />
+                <br className="xl:hidden" />
                 あなたと共にその先へ進むお手伝いをします。
               </div>
             </div>

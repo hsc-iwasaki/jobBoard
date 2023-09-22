@@ -14,6 +14,7 @@
     "isolatedModules": true,
     "jsx": "preserve",
     "incremental": true,
+    "noEmitOnError": false,
     "plugins": [
       {
         "name": "next"
@@ -31,7 +32,25 @@
     "pages/api/postCompany.js",
     "components/modalContent.tsx",
     "pages/api/verify.js_",
-    "pages/verify/index.tsx_"
+    "pages/verify/index.tsx_",
+    "components/userform.js",
+    "pages/apply/index.js",
+    "pages/api/updateUser.js",
+    "lib/prisma.js",
+    "lib/mailer.js",
+    "lib/imagePost.js",
+    "pages/_document.js",
+    "pages/_document.tsx_",
+    "pages/index.js",
+    "pages/user/index.js",
+    "pages/postJob/[id].js",
+    "pages/jobs/[id].js",
+    "pages/edit/job.js",
+    "pages/discover/index.js",
+    "pages/company/form.js",
+    "pages/company/[id].js",
+    "pages/auth/register.js",
+    "pages/auth/login.js"
   ],
   "exclude": ["node_modules"]
 }

@@ -1,10 +1,4 @@
-type Company = {
-  id: number;
-  title: string;
-  body: string;
-};
-
-export default function company({ company }: { company: Company }) {
+export default function company(company) {
   return (
     <div>
       <h1>POST(投稿){company.id}</h1>
@@ -14,7 +8,7 @@ export default function company({ company }: { company: Company }) {
   );
 }
 
-export async function getServerSideProps({ params }: { params: any }) {
+export async function getServerSideProps(params) {
   const id = params.id;
   const res = await fetch(`https://jsonplaceholder.typicode.com/posts/${id}`);
   const company = await res.json();

@@ -13,23 +13,7 @@ import {
   Textarea,
 } from "@chakra-ui/react";
 
-interface User {
-  id: number;
-  name: string;
-  email: string;
-}
-
-// フォームで使用する変数の型を定義
-type formInputs = {
-  recruiterId: number;
-  name: string;
-  contactEmail: string;
-  description: string;
-  logo: string;
-  website: string;
-};
-
-export default function RegisterForm({ user }: { user: User }) {
+export default function RegisterForm(user) {
   const [Message, setMessage] = useState(null);
 
   const formFields = [
@@ -80,7 +64,7 @@ export default function RegisterForm({ user }: { user: User }) {
     register,
     getValues,
     formState: { errors, isSubmitting },
-  } = useForm<formInputs>();
+  } = useForm();
 
   // フォームが送信されたときの処理
   const onSubmit = handleSubmit(async (data) => {
@@ -173,7 +157,7 @@ export default function RegisterForm({ user }: { user: User }) {
   );
 }
 
-export async function getServerSideProps(context: any) {
+export async function getServerSideProps(context) {
   const session = await getSession(context);
 
   if (!session) {

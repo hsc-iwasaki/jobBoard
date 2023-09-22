@@ -15,22 +15,7 @@ import {
   RadioGroup,
 } from "@chakra-ui/react";
 
-interface Props {
-  birthday: any;
-  ruby: any;
-  tel: any;
-  graduation: any;
-  spouse: any;
-  address: any;
-  gender: string;
-  role: string;
-  email: string;
-  image: string;
-  name: string;
-  companies: object;
-}
-
-export const Userform = ({ user }: { user: Props }) => {
+export const Userform = () => {
   const [Message, setMessage] = useState(null);
   const [Gender, setGender] = useState(null);
   const [Spouse, setSpouse] = useState(null);
@@ -139,7 +124,12 @@ export const Userform = ({ user }: { user: Props }) => {
   // フォームが送信されたときの処理
   const onSubmit = handleSubmit(async (data) => {
     try {
-      const url = data.image[0] ? await uploadPhoto(data.image) : null;
+      const imageFile = getValues("image").files; // react-hook-formのgetValuesを使用して値を取得
+      const url =
+        imageFile && imageFile.length > 0
+          ? await uploadPhoto(imageFile[0])
+          : null;
+
       data.image = url;
       const response = await fetch(
         `/api/updateUser?name=${data.name}&email=${user.email}`,

@@ -6,7 +6,7 @@ import { useState } from "react";
 import { useRouter } from "next/router";
 export default function Job({ job }) {
   const router = useRouter();
-  let imgSrc: string = job.imageUrl ?? "/images/AdobeStock_101676859.jpeg";
+  let imgSrc = job.imageUrl ?? "/images/AdobeStock_101676859.jpeg";
 
   return (
     <>

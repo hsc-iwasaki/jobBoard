@@ -5,7 +5,10 @@ class MyDocument extends Document {
     return (
       <Html>
         <Head>
-          <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+          <script
+            async
+            src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"
+          ></script>
         </Head>
         <body>
           <Main />

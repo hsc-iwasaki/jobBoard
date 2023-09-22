@@ -1,9 +1,6 @@
 import CardCompornent from "@/components/card";
-import { GetServerSideProps } from "next";
-import fs from "fs/promises";
-import path from "path";
 
-export const getServerSideProps: GetServerSideProps = async () => {
+export const getServerSideProps = async () => {
   try {
     const responce = await fetch(`${process.env.DOMAIN}/api/getJobList`);
     const data = await responce.json();
@@ -24,23 +21,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
   }
 };
 
-type Company = {
-  name: string;
-};
-
-type JobItem = {
-  id: number;
-  name: string;
-  title: string;
-  location: string;
-  company: Company;
-};
-
-type DataObject = {
-  data: JobItem[];
-};
-
-const List: React.FC<DataObject> = ({ data }) => {
+const List = ({ data }) => {
   return (
     <div className="my-56">
       <CardCompornent job={data}></CardCompornent>

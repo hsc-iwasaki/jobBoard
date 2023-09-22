@@ -1,7 +1,6 @@
-import { getSession } from "next-auth/react";
-import { prisma } from "@/lib/prisma";
-import { useForm, Controller } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { useState } from "react";
+import { getSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import { uploadPhoto } from "@/lib/imagePost";
 import {
@@ -14,38 +13,26 @@ import {
   FormErrorMessage,
   Textarea,
 } from "@chakra-ui/react";
-interface User {
-  id: number;
-  name: string;
-  email: string;
-}
 
-// フォームで使用する変数の型を定義
-type formInputs = {
-  jobId: number;
-  name: string;
-  contactEmail: string;
-  title: string;
-  description: string;
-  location: string;
-  salary: string;
-  type: string;
-};
-
-interface Job {
-  title: string;
-}
-
-export default function EditJob({ job }: { job: Job | null }) {
+export default function RegisterForm(user) {
   const [Message, setMessage] = useState(null);
   const router = useRouter();
+
+  function validateFileSize(value) {
+    if (value && value[0]) {
+      const fileSize = value[0].size; // ファイルのサイズを取得（bytes単位）
+      const maxSize = 1 * 1024 * 1024; // 1MBをbytes単位で定義
+      return fileSize <= maxSize || "1MB以上の画像は許可されていません。";
+    }
+    return true;
+  }
+
   const formFields = [
     {
       label: "求人名",
       name: "title",
       placeholder: "タイトル",
       required: true,
-      defaultValue: job.title,
       requiredMessage: "必須項目です",
       component: "Input",
       type: "text",
@@ -54,7 +41,6 @@ export default function EditJob({ job }: { job: Job | null }) {
       label: "求人詳細",
       name: "description",
       required: true,
-      defaultValue: job.description,
       requiredMessage: "",
       component: "Textarea",
       placeholder: `週休2日制（休日は土日祝日）
@@ -69,7 +55,6 @@ export default function EditJob({ job }: { job: Job | null }) {
       required: true,
       requiredMessage: "必須項目です",
       component: "Select",
-      defaultValue: job.industry,
       options: [
         { value: "", label: "選択してください" },
         { value: "Service", label: "サービス業" },
@@ -87,13 +72,13 @@ export default function EditJob({ job }: { job: Job | null }) {
       requiredMessage: "",
       component: "Input",
       type: "file",
+      validate: validateFileSize,
     },
     {
       label: "雇用形態",
       name: "type",
       required: true,
       requiredMessage: "必須項目です",
-      defaultValue: job.type,
       component: "Select",
       options: [
         { value: "", label: "選択してください" },
@@ -109,7 +94,6 @@ export default function EditJob({ job }: { job: Job | null }) {
       required: true,
       requiredMessage: "必須項目です",
       component: "Select",
-      defaultValue: job.region,
       options: [
         { value: "", label: "選択してください" },
         { value: "Ichihara", label: "市原" },
@@ -131,7 +115,6 @@ export default function EditJob({ job }: { job: Job | null }) {
       name: "location",
       required: true,
       requiredMessage: "必須項目です",
-      defaultValue: job.location,
       component: "Input",
       placeholder: "千葉県市原市市原1-1-1",
       type: "text",
@@ -142,7 +125,6 @@ export default function EditJob({ job }: { job: Job | null }) {
       required: false,
       requiredMessage: "",
       component: "Textarea",
-      defaultValue: job.location_detail,
       placeholder: `勤務地最寄駅：内房線／八幡宿駅
       受動喫煙対策：屋内全面禁煙＜勤務地補足＞
       マイカー通勤可（無料駐車場あり）＜転勤＞`,
@@ -152,7 +134,6 @@ export default function EditJob({ job }: { job: Job | null }) {
       label: "勤務時間開始",
       name: "start_time",
       required: true,
-      defaultValue: job.start_time,
       requiredMessage: "必須項目です",
       component: "Input",
       type: "time",
@@ -161,7 +142,6 @@ export default function EditJob({ job }: { job: Job | null }) {
       label: "勤務時間終了",
       name: "finish_time",
       required: true,
-      defaultValue: job.finish_time,
       requiredMessage: "必須項目です",
       component: "Input",
       type: "time",
@@ -171,7 +151,6 @@ export default function EditJob({ job }: { job: Job | null }) {
       name: "working_hours_detail",
       required: false,
       requiredMessage: "",
-      defaultValue: job.working_hours_detail,
       component: "Textarea",
       placeholder: `7:30～17:00 （所定労働時間：8時間0分）
       休憩時間：90分
@@ -183,7 +162,6 @@ export default function EditJob({ job }: { job: Job | null }) {
       name: "salary",
       required: true,
       requiredMessage: "必須項目です",
-      defaultValue: job.salary,
       component: "Input",
       placeholder: "500　(最低年収を数字だけ記入)",
       type: "number",
@@ -192,7 +170,6 @@ export default function EditJob({ job }: { job: Job | null }) {
       label: "給与詳細",
       name: "salary_detail",
       required: false,
-      defaultValue: job.salary_detail,
       requiredMessage: "必須項目です",
       component: "Textarea",
       type: "text",
@@ -203,7 +180,6 @@ export default function EditJob({ job }: { job: Job | null }) {
       required: true,
       requiredMessage: "",
       component: "Textarea",
-      defaultValue: job.welfare,
       type: "text",
     },
     {
@@ -212,7 +188,6 @@ export default function EditJob({ job }: { job: Job | null }) {
       required: true,
       requiredMessage: "",
       component: "Textarea",
-      defaultValue: job.vacation,
       placeholder: `週休2日制（休日は土日祝日）
       年間有給休暇10日～20日（下限日数は、入社半年経過後の付与日数となります）
       年間休日日数124日■土曜、日曜、祝日（社内カレンダーによる）
@@ -223,20 +198,18 @@ export default function EditJob({ job }: { job: Job | null }) {
 
   const {
     handleSubmit,
-    control,
     register,
+    // getValuesを追加
     getValues,
     formState: { errors, isSubmitting },
-  } = useForm<formInputs>();
+  } = useForm();
 
   // フォームが送信されたときの処理
   const onSubmit = handleSubmit(async (data) => {
     try {
-      if (data.imageUrl && data.imageUrl > 0) {
-        const url = await uploadPhoto(data.imageUrl);
-        data.imageUrl = url;
-      }
-      const response = await fetch("/api/editJob", {
+      const url = data.imageUrl[0] ? await uploadPhoto(data.imageUrl) : null;
+      data.imageUrl = url;
+      const response = await fetch("/api/postJob", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -263,25 +236,22 @@ export default function EditJob({ job }: { job: Job | null }) {
         )}
         <FormControl>
           <Input
-            id="jobId"
+            id="companyId"
             value={router.query.id}
             type="hidden"
-            {...register("jobId", {
+            {...register("companyId", {
               required: "必須項目です",
             })}
           />
         </FormControl>
         {formFields.map((field) => {
           let Component;
-          let additionalProps = {};
-
           if (field.component === "Textarea") {
             Component = Textarea;
           } else if (field.component === "Select") {
             Component = Select;
           } else {
             Component = Input;
-            additionalProps.type = field.type;
           }
           return (
             <FormControl
@@ -295,38 +265,28 @@ export default function EditJob({ job }: { job: Job | null }) {
                 {errors[field.name] && errors[field.name].message}
               </FormErrorMessage>
               {field.component !== "Select" ? (
-                <Controller
-                  name={field.name}
-                  control={control}
-                  defaultValue={field.defaultValue}
-                  render={({ field }) => (
-                    <Component
-                      {...field}
-                      id={field.name}
-                      placeholder={field.placeholder}
-                      {...additionalProps}
-                    />
-                  )}
+                <Component
+                  id={field.name}
+                  placeholder={field.placeholder}
+                  type={field.type} // 追加された部分
+                  {...register(field.name, {
+                    required: field.required ? field.requiredMessage : false,
+                    validate: field.validate,
+                  })}
                 />
               ) : (
-                <Controller
-                  name={field.name}
-                  control={control}
-                  defaultValue={field.defaultValue}
-                  render={({ field: renderProps }) => (
-                    <Component
-                      {...renderProps}
-                      id={field.name}
-                      {...additionalProps}
-                    >
-                      {field.options.map((option, index) => (
-                        <option key={index} value={option.value}>
-                          {option.label}
-                        </option>
-                      ))}
-                    </Component>
-                  )}
-                />
+                <Component
+                  id={field.name}
+                  {...register(field.name, {
+                    required: field.required ? field.requiredMessage : false,
+                  })}
+                >
+                  {field.options.map((option, index) => (
+                    <option key={index} value={option.value}>
+                      {option.label}
+                    </option>
+                  ))}
+                </Component>
               )}
             </FormControl>
           );
@@ -339,14 +299,14 @@ export default function EditJob({ job }: { job: Job | null }) {
           isLoading={isSubmitting}
           type="submit"
         >
-          修正内容を送信
+          送信
         </Button>
       </form>
     </Box>
   );
 }
 
-export async function getServerSideProps(context: any) {
+export async function getServerSideProps(context) {
   const session = await getSession(context);
 
   if (!session) {
@@ -357,44 +317,8 @@ export async function getServerSideProps(context: any) {
       },
     };
   }
-  // URLのパラメータからjobsのidを取得
-  const jobId = context.query.id;
-
-  // sessionのユーザーが持っているcompaniesを取得
-  const user = await prisma.user.findUnique({
-    where: { email: session.user.email },
-    include: {
-      companies: {
-        select: {
-          jobs: true,
-        },
-      },
-    },
-  });
-
-  // ユーザーのcompaniesの中で、指定されたjobIdと一致するjobを探す
-  const matchingJobs = user?.companies.flatMap((company) =>
-    company.jobs.filter((job) => job.id === parseInt(jobId))
-  );
-
-  const job = matchingJobs?.[0];
-
-  if (job) {
-    // UserのDateフィールドを文字列に変換
-    job.createdAt = job.createdAt.toISOString();
-    job.updatedAt = user.updatedAt.toISOString();
-  }
-
-  if (!job) {
-    return {
-      redirect: {
-        destination: "/",
-        permanent: false,
-      },
-    };
-  }
 
   return {
-    props: { job },
+    props: { user: session.user },
   };
 }

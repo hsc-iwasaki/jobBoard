@@ -6,8 +6,10 @@ interface Props {
       id: number;
       title: string;
       name: string;
-      imageUrl: string;
-      company: object;
+      imageUrl?: string;
+      company: {
+        name: string;
+      };
       salary: string;
       location: string;
     }) => import("react").JSX.Element
@@ -23,8 +25,10 @@ const CardComponent = ({ job }: { job: Props }) => {
           id: number;
           title: string;
           name: string;
-          imageUrl: string;
-          company: object;
+          imageUrl?: string;
+          company: {
+            name: string;
+          };
           salary: string;
           location: string;
         }) => {

@@ -7,7 +7,7 @@ interface Props {
     logo: string;
     name: string;
     updatedAt: string;
-    jobs: { title: string }[];
+    jobs: { title: string; id: number }[];
   }[];
 }
 
