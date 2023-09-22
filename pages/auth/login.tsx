@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { getSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import { signIn } from "next-auth/react";
 import NextLink from "next/link";
@@ -20,7 +21,7 @@ export default function Login() {
       return () => clearTimeout(timer);
     }
     if (router.query.message === "register_complete") {
-      setMessage("登録が完了しました");
+      setMessage("登録が完了しました ログインを開始してください");
       // 3秒後にメッセージを消す
       const timer = setTimeout(() => {
         setMessage(null);
@@ -41,14 +42,17 @@ export default function Login() {
     });
 
     if (response.ok) {
-      const result = await signIn(
-        "credentials",
-        {
-          email: formData.email,
-          password: formData.password,
-        },
-        { callbackUrl: `${process.env.NEXT_PUBLIC_BASE_URL}/discover` }
-      );
+      const result = await signIn("credentials", {
+        email: formData.email,
+        password: formData.password,
+        redirect: false,
+      });
+      if (result) {
+        setMessage("ログインしました");
+        await new Promise((resolve) => setTimeout(resolve, 1500));
+        setMessage(null);
+        router.push("/discover");
+      }
     } else {
       const data = await response.json();
       setErrorMessage(data.error);
@@ -119,7 +123,7 @@ export default function Login() {
 
             <button
               type="submit"
-              className="block w-full rounded-lg bg-indigo-600 px-5 py-3 text-sm font-medium text-white"
+              className="block w-full rounded-lg bg-green-600 px-5 py-3 text-sm font-medium text-white"
             >
               ログイン
             </button>
@@ -139,4 +143,19 @@ export default function Login() {
       </div>
     </>
   );
+}
+
+export async function getServerSideProps(context: any) {
+  const session = await getSession(context);
+  if (session) {
+    return {
+      redirect: {
+        destination: "/",
+        permanent: false,
+      },
+    };
+  }
+  return {
+    props: {},
+  };
 }

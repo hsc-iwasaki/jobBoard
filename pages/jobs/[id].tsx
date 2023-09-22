@@ -10,9 +10,11 @@ export default function Job({ job }) {
 
   return (
     <>
-      <div className="max-w-7xl w-2/3 mx-auto my-36">
+      <div className="max-w-7xl lg:w-2/3 w-[90%] mx-auto my-36">
         <div>
-          <h1 className="text-4xl font-bold pb-12 text-center">{job.title}</h1>
+          <h1 className="lg:text-4xl text-xl font-bold pb-12 text-center">
+            {job.title}
+          </h1>
         </div>
         <div>
           <Image
@@ -24,35 +26,35 @@ export default function Job({ job }) {
         <div className="bg-white border border-gray-200 my-12">
           <table className="divide-y divide-gray-200 w-full">
             <tbody>
-              <tr className="py-2 border-b">
-                <td className="shrink-0 font-semibold whitespace-nowrap px-4 mb-2 md:mb-0 w-52 border-b md:border-r">
+              <tr className="py-2 border-b flex-col lg:flex-row">
+                <td className="shrink-0 font-semibold whitespace-nowrap px-4 mb-2 md:mb-0 w-52 border-b md:border-r inline-block lg:table-cell lg:w-auto w-full text-center py-5">
                   求人の詳細
                 </td>
-                <td className="py-5 px-10 text-gray-700 flex-grow whitespace-pre-line leading-7">
+                <td className="py-5 lg:px-10 px-4 text-gray-700 flex-grow whitespace-pre-line inline-block lg:table-cell leading-7 lg:border-l">
                   {job.description}
                 </td>
               </tr>
-              <tr className="py-2 border-b">
-                <td className="shrink-0 font-semibold whitespace-nowrap px-4 mb-2 md:mb-0 w-52 border-b md:border-r">
+              <tr className="py-2 border-b flex-col lg:flex-row">
+                <td className="shrink-0 font-semibold whitespace-nowrap px-4 mb-2 md:mb-0 w-52 border-b md:border-r inline-block lg:table-cell lg:w-auto w-full text-center py-5">
                   雇用形態
                 </td>
-                <td className="py-5 px-10 text-gray-700 flex-grow leading-7">
+                <td className="py-5 lg:px-10 px-4 text-gray-700 flex-grow whitespace-pre-line inline-block lg:table-cell leading-7 lg:border-l">
                   {job.type}
                 </td>
               </tr>
-              <tr className="py-2 border-b">
-                <td className="shrink-0 font-semibold whitespace-nowrap px-4 mb-2 md:mb-0 w-52 border-b md:border-r">
+              <tr className="py-2 border-b flex-col lg:flex-row">
+                <td className="shrink-0 font-semibold whitespace-nowrap px-4 mb-2 md:mb-0 w-52 border-b md:border-r inline-block lg:table-cell lg:w-auto w-full text-center py-5">
                   勤務地
                 </td>
-                <td className="py-5 px-10 text-gray-700 flex-grow whitespace-pre-line leading-7">
+                <td className="py-5 lg:px-10 px-4 text-gray-700 flex-grow whitespace-pre-line leading-7 inline-block lg:table-cell">
                   {job.location_detail}
                 </td>
               </tr>
-              <tr className="py-2 border-b">
-                <td className="shrink-0 font-semibold whitespace-nowrap px-4 mb-2 md:mb-0 w-52 border-b md:border-r">
+              <tr className="py-2 border-b flex-col lg:flex-row">
+                <td className="shrink-0 font-semibold whitespace-nowrap px-4 mb-2 md:mb-0 w-52 border-b md:border-r inline-block lg:table-cell lg:w-auto w-full text-center py-5">
                   勤務時間
                 </td>
-                <td className="py-5 px-10 text-gray-700 flex-grow leading-7">
+                <td className="py-5 lg:px-10 px-4 text-gray-700 flex-grow whitespace-pre-line inline-block lg:table-cell leading-7 lg:border-l">
                   <p>
                     {job.start_time}-{job.finish_time}
                   </p>
@@ -61,27 +63,27 @@ export default function Job({ job }) {
                   </p>
                 </td>
               </tr>
-              <tr className="py-2 border-b">
-                <td className="shrink-0 font-semibold whitespace-nowrap px-4 mb-2 md:mb-0 w-52 border-b md:border-r">
+              <tr className="py-2 border-b flex-col lg:flex-row">
+                <td className="shrink-0 font-semibold whitespace-nowrap px-4 mb-2 md:mb-0 w-52 border-b md:border-r inline-block lg:table-cell lg:w-auto w-full text-center py-5">
                   給与
                 </td>
-                <td className="py-5 px-10 text-gray-700 flex-grow whitespace-pre-line leading-7">
+                <td className="py-5 lg:px-10 px-4 text-gray-700 flex-grow whitespace-pre-line leading-7 inline-block lg:table-cell">
                   {job.salary_detail}
                 </td>
               </tr>
-              <tr className="py-2 border-b">
-                <td className="shrink-0 font-semibold whitespace-nowrap px-4 mb-2 md:mb-0 w-52 border-b md:border-r">
+              <tr className="py-2 border-b flex-col lg:flex-row">
+                <td className="shrink-0 font-semibold whitespace-nowrap px-4 mb-2 md:mb-0 w-52 border-b md:border-r inline-block lg:table-cell lg:w-auto w-full text-center py-5">
                   福利厚生
                 </td>
-                <td className="py-5 px-10 text-gray-700 flex-grow whitespace-pre-line leading-7">
+                <td className="py-5 lg:px-10 px-4 text-gray-700 flex-grow whitespace-pre-line leading-7 inline-block lg:table-cell">
                   {job.welfare}
                 </td>
               </tr>
-              <tr className="py-2 border-b">
-                <td className="shrink-0 font-semibold whitespace-nowrap px-4 mb-2 md:mb-0 w-52 border-b md:border-r">
+              <tr className="py-2 border-b flex-col lg:flex-row">
+                <td className="shrink-0 font-semibold whitespace-nowrap px-4 mb-2 md:mb-0 w-52 border-b md:border-r inline-block lg:table-cell lg:w-auto w-full text-center py-5">
                   休日・休暇
                 </td>
-                <td className="py-5 px-10 text-gray-700 flex-grow whitespace-pre-line leading-7">
+                <td className="py-5 lg:px-10 px-4 text-gray-700 flex-grow whitespace-pre-line leading-7 inline-block lg:table-cell">
                   {job.vacation}
                 </td>
               </tr>

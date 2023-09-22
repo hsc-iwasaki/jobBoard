@@ -35,7 +35,7 @@ export default async function handler(req, res) {
         `
       );
       return res.status(200).json({
-        message: "認証メールを送信しました",
+        message: "入力されたメールアドレスに認証メールを送信しました。",
       });
     } catch (error) {
       res.status(400).json({ error: error.message });

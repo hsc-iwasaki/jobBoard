@@ -34,6 +34,16 @@ type formInputs = {
 export default function RegisterForm({ user }: { user: User }) {
   const [Message, setMessage] = useState(null);
   const router = useRouter();
+
+  function validateFileSize(value) {
+    if (value && value[0]) {
+      const fileSize = value[0].size; // ファイルのサイズを取得（bytes単位）
+      const maxSize = 1 * 1024 * 1024; // 1MBをbytes単位で定義
+      return fileSize <= maxSize || "1MB以上の画像は許可されていません。";
+    }
+    return true;
+  }
+
   const formFields = [
     {
       label: "求人名",
@@ -79,6 +89,7 @@ export default function RegisterForm({ user }: { user: User }) {
       requiredMessage: "",
       component: "Input",
       type: "file",
+      validate: validateFileSize,
     },
     {
       label: "雇用形態",
@@ -277,6 +288,7 @@ export default function RegisterForm({ user }: { user: User }) {
                   type={field.type} // 追加された部分
                   {...register(field.name, {
                     required: field.required ? field.requiredMessage : false,
+                    validate: field.validate,
                   })}
                 />
               ) : (

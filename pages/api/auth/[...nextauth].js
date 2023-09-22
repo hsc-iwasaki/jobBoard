@@ -95,6 +95,9 @@ export const authOptions = {
 
       return session;
     },
+    // async redirect({ baseUrl }) {
+    //   return baseUrl;
+    // },
 
     async jwt({ token, user, trigger, account, profile, isNewUser }) {
       if (trigger === "update" && session?.user) {

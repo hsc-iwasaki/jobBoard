@@ -17,9 +17,9 @@ const CardCompany = ({ companies }: Props) => {
     companies.map(() => true)
   );
   return (
-    <div className="mt-56 container flex flex-col items-center justify-center max-w-4xl w-full mx-auto bg-white rounded-lg shadow dark:bg-gray-800">
-      <div className="flex justify-between w-full px-4 py-5 border-b sm:px-6 bg-gray-100">
-        <div>
+    <div className="mt-56 container flex flex-col items-center justify-center max-w-4xl  lg:w-full w-[90%] mx-auto bg-white rounded-lg shadow dark:bg-gray-800">
+      <div className="flex flex-wrap w-full px-4 py-5 border-b sm:px-6 bg-gray-100 justify-end">
+        <div className="w-full">
           <h3 className="text-lg font-medium leading-6 text-gray-900 dark:text-white">
             会社情報
           </h3>
@@ -63,14 +63,14 @@ const CardCompany = ({ companies }: Props) => {
                   setIsOpenArray(updatedIsOpenArray);
                 }}
               >
-                <div className="flex items-center flex-1 p-4 cursor-pointer select-none">
+                <div className="flex flex-wrap items-center flex-1 p-4 cursor-pointer select-none justify-end">
                   <div className="flex flex-col items-center justify-center w-10 h-10 mr-4">
                     <NextLink href="/company">
                       <img src={imgSrc} className="w-full" alt="companyLogo" />
                     </NextLink>
                   </div>
-                  <div className="flex-1 pl-1 mr-16">
-                    <div className="font-medium dark:text-white">
+                  <div className="flex-1 pl-1 mr-16 ">
+                    <div className="font-medium dark:text-white lg:whitespace-normal whitespace-nowrap">
                       {item.name}
                     </div>
                   </div>

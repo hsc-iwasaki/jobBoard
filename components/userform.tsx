@@ -164,7 +164,7 @@ export const Userform = ({ user }: { user: Props }) => {
   });
   return (
     <>
-      <div className="w-1/2 mx-auto">
+      <div className="lg:w-1/2 w-[90%] mx-auto">
         <h2 className="text-center mt-20 text-xl font-bold">
           プロフィール編集
         </h2>

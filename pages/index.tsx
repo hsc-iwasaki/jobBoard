@@ -65,7 +65,7 @@ export default function Home() {
     lines.forEach((line, index) => {
       ScrollTrigger.create({
         trigger: line,
-        start: "top center",
+        start: "bottom center",
         end: "bottom center",
         onEnter: () => {
           if (index < lines.length - 1) {
@@ -152,50 +152,68 @@ export default function Home() {
   return (
     <>
       <section>
-        <div className="flex justify-center items-center h-screen relative fade-group">
-          <div className="w-full md:w-2/3 lg:w-1/2 xl:w-1/3 h-full relative">
-            <Canvas className="w-full h-full absolute top-0 left-0">
+        <div className="flex flex-wrap mt-20 justify-center items-center  xl:h-screen relative fade-group">
+          <div className="w-full md:w-2/3 lg:w-1/2 xl:w-1/3 md:h-full h-[400px] relative">
+            <Canvas className="w-full md:h-full  absolute top-0 left-0">
               <ambientLight intensity={10} />
               <spotLight position={[0, 10, 10]} />
               <Model />
             </Canvas>
           </div>
           <div className="inset-0 w-fit h-fit">
-            <h1 className="text-8xl font-bold text-center">
+            <h1 className="md:text-8xl sm:text-6xl text-4xl font-bold text-center">
               いちはら × WORK
               <br />
-              <p className="text-6xl font-bold py-9">|| </p>
+              <p className="md:text-6xl sm:text-5xl text-3xl font-bold sm:py-9 py-5">
+                ||{" "}
+              </p>
               いちワク
             </h1>
           </div>
         </div>
       </section>
       <section>
-        <div className="mt-24 fade-group">
-          <h2 className="text-center font-bold text-6xl pb-12">ABOUT US</h2>
+        <div className="xl:mt-24 fade-group mt-[200px]">
+          <h2 className="text-center font-bold md:text-6xl text-5xl pb-12">
+            ABOUT US
+          </h2>
         </div>
         <div className="relative">
           {/* <div className="absolute">
             <FallModel />
           </div> */}
-          <div className="max-w-7xl m-auto text-2xl fade-group">
+          <div className="max-w-7xl m-auto md:text-2xl text-[16px] fade-group">
             <div className="content text-right">
-              <div className="line">当サイトでは、</div>
-              <div className="line pt-14">幅広い分野の求人を提供し、</div>
-              <div className="line pt-14">
-                市原市での働き方を全く新しい視点から探求します。
+              <div className="line xl:text-right text-center">
+                当サイトでは、
               </div>
-              <div className="line pt-14">
-                どんな夢を抱いていても、どんなキャリアを目指していても、
+              <div className="line md:pt-14 pt-8 xl:text-right text-center">
+                幅広い分野の求人を提供し、
               </div>
-              <div className="line pt-14">
-                ここ市原市でその実現のチャンスを見つけましょう。
+              <div className="line md:pt-14 pt-8 xl:text-right text-center">
+                市原市での働き方を
+                <br />
+                全く新しい視点から探求します。
               </div>
-              <div className="line pt-14">
-                「いちはらで働こう！」という一歩を踏み出す勇気、
+              <div className="line md:pt-14 pt-8 xl:text-right text-center">
+                どんな夢を抱いていても、
+                <br />
+                どんなキャリアを目指していても、
               </div>
-              <div className="line pt-14">
-                私たちはあなたと共にその先へ進むお手伝いをします。
+              <div className="line md:pt-14 pt-8 xl:text-right text-center">
+                ここ市原市で
+                <br />
+                その実現のチャンスを見つけましょう。
+              </div>
+              <div className="line md:pt-14 pt-8 xl:text-right text-center">
+                「いちはらで働こう！」
+                <br />
+                という一歩を踏み出す勇気、
+              </div>
+              <div className="line md:pt-14 pt-8 xl:text-right text-center">
+                私たちは
+                <br />
+                あなたと共にその先へ進むお手伝いをします。
               </div>
             </div>
           </div>
@@ -203,7 +221,7 @@ export default function Home() {
       </section>
       <section>
         <div className="mt-52">
-          <h2 className="text-center font-bold text-6xl pb-36 fade-group">
+          <h2 className="text-center font-bold pb-36 fade-group md:text-6xl text-5xl">
             求人情報
           </h2>
         </div>

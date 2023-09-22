@@ -48,9 +48,9 @@ export default function User({ user }: { user: User | null }) {
   if (user.role == "Admin") {
     return (
       <>
-        {/* <div>
+        <div>
           <CompanyCard companies={user.companies}></CompanyCard>
-        </div> */}
+        </div>
         <div>
           <Userform user={user} />
         </div>

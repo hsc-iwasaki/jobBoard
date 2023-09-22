@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { signIn } from "next-auth/react";
-
+import { getSession } from "next-auth/react";
 export default function Login() {
   const [formData, setFormData] = useState({
     role: "",
@@ -9,10 +9,21 @@ export default function Login() {
     password: "",
   });
   const [errorMessage, setErrorMessage] = useState(null);
+  const [Message, setMessage] = useState(null);
+
+  function isValidPassword(password) {
+    const regex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
+    return regex.test(password);
+  }
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
-
+    if (!isValidPassword(formData.password)) {
+      setErrorMessage(
+        "パスワードは8文字以上で英字と数字を組み合わせてください。"
+      );
+      return;
+    }
     const response = await fetch("/api/register", {
       method: "POST",
       headers: {
@@ -22,6 +33,12 @@ export default function Login() {
     });
 
     if (response.ok) {
+      const result = await response.json();
+      setMessage(result.message);
+      const timer = setTimeout(() => {
+        setMessage(null);
+      }, 3000);
+      return () => clearTimeout(timer);
     } else {
       const data = await response.json();
       setErrorMessage(data.error);
@@ -31,6 +48,14 @@ export default function Login() {
   return (
     <>
       <div className="mx-auto max-w-screen-xl px-4 py-16 sm:px-6 lg:px-8">
+        {Message && (
+          <div
+            className="fixed top-5 left-0 right-0 w-1/2 mx-auto rounded z-[51] items-center bg-green-500 text-white text-sm font-bold px-4 py-3"
+            role="alert"
+          >
+            <p className="text-sm">{Message}</p>
+          </div>
+        )}
         <div className="mx-auto max-w-lg">
           <h1 className="text-center text-2xl font-bold  sm:text-3xl">
             ユーザー登録
@@ -54,14 +79,13 @@ export default function Login() {
                   className="w-full rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm"
                   id="role"
                   value={formData.role}
+                  hidden
                   onChange={(e) =>
                     setFormData({ ...formData, role: e.target.value })
                   }
                   required
                 >
-                  <option value="">属性選択</option>
                   <option value="JobSeeker">求職者</option>
-                  <option value="Recruiter">採用担当者</option>
                 </select>
               </div>
             </div>
@@ -128,7 +152,7 @@ export default function Login() {
 
             <button
               type="submit"
-              className="block w-full rounded-lg bg-indigo-600 px-5 py-3 text-sm font-medium text-white"
+              className="block w-full rounded-lg bg-green-500 px-5 py-3 text-sm font-medium text-white"
             >
               登録
             </button>
@@ -137,4 +161,19 @@ export default function Login() {
       </div>
     </>
   );
+}
+
+export async function getServerSideProps(context: any) {
+  const session = await getSession(context);
+  if (session) {
+    return {
+      redirect: {
+        destination: "/",
+        permanent: false,
+      },
+    };
+  }
+  return {
+    props: {},
+  };
 }

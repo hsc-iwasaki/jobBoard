@@ -45,7 +45,15 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }) {
 function LoadingScreen({ fadeOut }) {
   return (
     <div className={`loadingScreen ${fadeOut ? "fade-out" : "fade-in"}`}>
-      Loading...
+      <div>
+        <lottie-player
+          src="/images/loading.json"
+          background="transparent"
+          speed="1"
+          loop
+          autoplay
+        ></lottie-player>
+      </div>
     </div>
   );
 }
