@@ -1,4 +1,6 @@
-import { prisma } from "@/lib/prisma";
+import { PrismaClient } from "@prisma/client";
+
+let prisma = new PrismaClient();
 
 export default async function handler(req, res) {
   try {
@@ -16,7 +18,6 @@ export default async function handler(req, res) {
         id: "desc",
       },
     });
-
     return res.status(200).json(jobs);
   } catch (error) {
     res.status(400).json({ error: error.message });
