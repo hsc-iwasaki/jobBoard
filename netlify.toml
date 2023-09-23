@@ -1,5 +1,0 @@
-[build]
-  publish = ""
-  command = "yarn build"
-[[plugins]]
-  package = "@netlify/plugin-nextjs"
