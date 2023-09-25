@@ -80,6 +80,9 @@ export const authOptions = {
           companies: true,
         },
       });
+      if (!user) {
+        throw new Error("User not found");
+      }
       session.user.id = user.id;
       session.user.role = user.role;
       session.user.image = user.image;
@@ -99,8 +102,8 @@ export const authOptions = {
     // },
 
     async jwt({ token, user, trigger, account, profile, isNewUser }) {
-      if (trigger === "update" && session?.user) {
-        token.name = session.user.name;
+      if (trigger === "update" && user) {
+        token.name = user.name;
       }
       if (account) token.accessToken = account.access_token;
       return token;
