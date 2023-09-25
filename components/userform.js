@@ -1,4 +1,4 @@
-import { useSession, signIn } from "next-auth/react";
+import { useSession, getSession, signIn } from "next-auth/react";
 import { useForm, Controller } from "react-hook-form";
 import { useState } from "react";
 import { uploadPhoto } from "@/lib/imagePost";
@@ -15,7 +15,7 @@ import {
   RadioGroup,
 } from "@chakra-ui/react";
 
-export const Userform = () => {
+export const Userform = ({ user }) => {
   const [Message, setMessage] = useState(null);
   const [Gender, setGender] = useState(null);
   const [Spouse, setSpouse] = useState(null);
@@ -143,7 +143,8 @@ export const Userform = () => {
       );
       const result = await response.json();
       setMessage(result.message);
-
+      trigger("session");
+      const updatedSession = await getSession();
       const timer = setTimeout(() => {
         setMessage(null);
       }, 3000);

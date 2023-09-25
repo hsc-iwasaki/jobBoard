@@ -50,7 +50,8 @@
     "pages/company/form.js",
     "pages/company/[id].js",
     "pages/auth/register.js",
-    "pages/auth/login.js"
+    "pages/auth/login.js",
+    "components/companyCard.js"
   ],
   "exclude": ["node_modules"]
 }

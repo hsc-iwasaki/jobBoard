@@ -65,10 +65,10 @@ export const authOptions = {
     //   },
     //   from: process.env.EMAIL_FROM,
     // }),
-    GoogleProvider({
-      clientId: process.env.GOOGLE_CLIENT_ID,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-    }),
+    // GoogleProvider({
+    //   clientId: process.env.GOOGLE_CLIENT_ID,
+    //   clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+    // }),
   ],
   callbacks: {
     async session({ session, token }) {

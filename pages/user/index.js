@@ -9,7 +9,7 @@ import { useRouter } from "next/router";
 import { prisma } from "../../lib/prisma";
 import { Userform } from "@/components/userform";
 
-export default function User(user) {
+export default function User({ user }) {
   if (!user) {
     return <button onClick={() => signOut()}>Sign out</button>; // or you can return null or some other placeholder
   }

@@ -15,7 +15,7 @@ import {
   Textarea,
 } from "@chakra-ui/react";
 
-export default function EditJob(job) {
+export default function EditJob({ job }) {
   const [Message, setMessage] = useState(null);
   const router = useRouter();
   const formFields = [

@@ -1,21 +1,10 @@
 import { useState } from "react";
 import NextLink from "next/link";
 
-interface Props {
-  companies: {
-    id: number;
-    logo: string;
-    name: string;
-    updatedAt: string;
-    jobs: { title: string; id: number }[];
-  }[];
-}
-
-const CardCompany = ({ companies }: Props) => {
+const CompanyCard = ({ companies }) => {
   // アコーディオンの開閉状態を格納する配列
-  const [isOpenArray, setIsOpenArray] = useState<boolean[]>(
-    companies.map(() => true)
-  );
+  const [isOpenArray, setIsOpenArray] = useState(companies.map(() => true));
+
   return (
     <div className="mt-56 container flex flex-col items-center justify-center max-w-4xl  lg:w-full w-[90%] mx-auto bg-white rounded-lg shadow dark:bg-gray-800">
       <div className="flex flex-wrap w-full px-4 py-5 border-b sm:px-6 bg-gray-100 justify-end">
@@ -39,7 +28,7 @@ const CardCompany = ({ companies }: Props) => {
 
       <ul className="flex flex-col divide-y divide w-full">
         {companies.map((item, index) => {
-          let imgSrc: string;
+          let imgSrc;
           if (item.logo) {
             imgSrc = item.logo;
           } else {
@@ -112,4 +101,4 @@ const CardCompany = ({ companies }: Props) => {
   );
 };
 
-export default CardCompany;
+export default CompanyCard;

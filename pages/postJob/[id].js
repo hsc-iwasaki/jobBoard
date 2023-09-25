@@ -14,7 +14,7 @@ import {
   Textarea,
 } from "@chakra-ui/react";
 
-export default function RegisterForm(user) {
+export default function RegisterForm() {
   const [Message, setMessage] = useState(null);
   const router = useRouter();
 
