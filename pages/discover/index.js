@@ -2,7 +2,9 @@ import CardCompornent from "@/components/card";
 
 export const getServerSideProps = async () => {
   try {
-    const response = await fetch(`${process.env.DOMAIN}/api/getJobList`);
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_BASE_URL}/api/getJobList`
+    );
     if (!response.ok) {
       throw new Error("Network response was not ok");
     }

@@ -100,7 +100,6 @@ export const authOptions = {
     // async redirect({ baseUrl }) {
     //   return baseUrl;
     // },
-
     async jwt({ token, user, trigger, account, profile, isNewUser }) {
       if (trigger === "update" && user) {
         token.name = user.name;
